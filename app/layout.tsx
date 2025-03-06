@@ -21,15 +21,18 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={`${poppins.className} antialiased min-h-screen p-5`}>
+      <body className={`${poppins.className} antialiased min-h-screen`}>
         <QueryProvider>
           <ThemeProvider
             attribute='class'
             defaultTheme='system'
             enableSystem
             disableTransitionOnChange>
-            <Header />
-            {children}
+            <div className='p-5'>
+              {' '}
+              <Header />
+              {children}
+            </div>
           </ThemeProvider>
         </QueryProvider>
       </body>

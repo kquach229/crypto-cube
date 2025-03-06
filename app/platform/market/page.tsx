@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import Image from 'next/image';
+import { Search } from 'lucide-react';
 
 type Coin = {
   id: string;
@@ -79,12 +80,25 @@ const MarketPage = () => {
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
 
-  console.log(coinsData);
-
   return (
     <div className='gap-5 flex flex-col'>
-      <ReusablePaper>
-        <div className='h-5rem'>Market Overview</div>
+      <ReusablePaper
+        styles={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <div>
+          <div>Market Overview</div>
+        </div>
+        <div className='relative flex items-center'>
+          <Search className='absolute left-2.5 h-4 w-4 text-primary' />
+          <input
+            type='search'
+            placeholder='Search for a coin'
+            className='pl-8 border-none shadow-none w-[300px]'
+          />
+        </div>
       </ReusablePaper>
       <ReusablePaper>
         <div>

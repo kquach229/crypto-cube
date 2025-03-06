@@ -2,13 +2,16 @@
 import React from 'react';
 import { useTheme } from 'next-themes';
 
-const ReusablePaper = ({ children }: { children: React.ReactNode }) => {
-  const { theme } = useTheme();
+const ReusablePaper = ({
+  children,
+  styles,
+}: {
+  children: React.ReactNode;
+  styles?: React.CSSProperties;
+}) => {
+  const { theme, systemTheme } = useTheme();
   return (
-    <div
-      className={`${
-        theme == 'dark' ? 'bg-[#193114]' : 'bg-amber-50'
-      } p-2 rounded-xl`}>
+    <div className='bg-paper rounded-sm p-5' style={styles}>
       {children}
     </div>
   );
