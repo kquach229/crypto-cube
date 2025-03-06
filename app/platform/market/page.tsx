@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/table';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
+import { formatPrice } from '@/src/lib/utils';
 
 type Coin = {
   id: string;
@@ -137,7 +138,9 @@ const MarketPage = () => {
                   </TableCell>
                   <TableCell>{coin.market_cap}</TableCell>
                   <TableCell>{coin.price_change_24h}</TableCell>
-                  <TableCell>{coin.current_price}</TableCell>
+                  <TableCell>
+                    {formatPrice('USD', coin.current_price)}
+                  </TableCell>
                   <TableCell>{coin.price_change_percentage_24h}</TableCell>
                 </TableRow>
               ))}
