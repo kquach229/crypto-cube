@@ -2,6 +2,8 @@
 import ReusablePaper from '@/app/components/ReusablePaper';
 import React, { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 import {
   Table,
   TableBody,
@@ -15,7 +17,6 @@ import Image from 'next/image';
 import { Search } from 'lucide-react';
 import {
   formatPrice,
-  friendlyFormatPrice,
   friendlyFormatter,
   percentageFormatter,
 } from '@/src/lib/utils';
@@ -60,6 +61,7 @@ const fetchCryptoMarket = async (): Promise<Coin[]> => {
     'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd'
   );
   const data: Coin[] = await response.json();
+  console.log(data);
 
   return data.map((coin: Coin) => ({
     id: coin.id,
@@ -87,8 +89,25 @@ const MarketPage = () => {
     staleTime: 0,
   });
 
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const handleSearch = useDebouncedCallback((searchTerm: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (searchTerm) {
+      params.set('query', searchTerm);
+    } else {
+      params.delete('query');
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+  }, 300);
+
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error</p>;
+
+  const searchQuery = searchParams.get('query')?.toLocaleLowerCase() || '';
 
   return (
     <div className='gap-5 flex flex-col'>
@@ -99,14 +118,16 @@ const MarketPage = () => {
           alignItems: 'center',
         }}>
         <div>
-          <div>Market Overview</div>
+          <div className='font-semibold'>Market Overview</div>
         </div>
         <div className='relative flex items-center'>
           <Search className='absolute left-2.5 h-4 w-4 text-primary' />
           <input
+            onChange={(e) => handleSearch(e.target.value)}
             type='search'
             placeholder='Search for a coin'
             className='pl-8 border-none shadow-none w-[300px]'
+            defaultValue={searchParams.get('query')?.toString()}
           />
         </div>
       </ReusablePaper>
@@ -127,38 +148,44 @@ const MarketPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {coinsData.map((coin) => (
-                <TableRow key={coin.id}>
-                  <TableCell>{coin.rank}</TableCell>
-                  <TableCell className='flex gap-2'>
-                    <Image
-                      className='rounded-3xl'
-                      src={coin.image}
-                      height={35}
-                      width={35}
-                      alt={coin.name}
-                    />
-                    <div className='flex flex-col justify-center'>
-                      <span className='font-semibold'>{coin.name}</span>
-                      <span className='text-xs'>
-                        {coin.symbol.toUpperCase()}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    {friendlyFormatter.format(coin.market_cap)}
-                  </TableCell>
-                  <TableCell>
-                    {formatPrice('USD', coin.price_change_24h)}
-                  </TableCell>
-                  <TableCell>
-                    {formatPrice('USD', coin.current_price)}
-                  </TableCell>
-                  <TableCell>
-                    {percentageFormatter(coin.price_change_percentage_24h)}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {coinsData
+                .filter(
+                  (coin) =>
+                    coin.name.toLowerCase().includes(searchQuery) ||
+                    coin.symbol.toLowerCase().includes(searchQuery)
+                )
+                .map((coin) => (
+                  <TableRow key={coin.id}>
+                    <TableCell>{coin.rank}</TableCell>
+                    <TableCell className='flex gap-2'>
+                      <Image
+                        className='rounded-3xl'
+                        src={coin.image}
+                        height={35}
+                        width={35}
+                        alt={coin.name}
+                      />
+                      <div className='flex flex-col justify-center'>
+                        <span className='font-semibold'>{coin.name}</span>
+                        <span className='text-xs'>
+                          {coin.symbol.toUpperCase()}
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      {friendlyFormatter.format(coin.market_cap)}
+                    </TableCell>
+                    <TableCell>
+                      {formatPrice('USD', coin.price_change_24h)}
+                    </TableCell>
+                    <TableCell>
+                      {formatPrice('USD', coin.current_price)}
+                    </TableCell>
+                    <TableCell>
+                      {percentageFormatter(coin.price_change_percentage_24h)}
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>
