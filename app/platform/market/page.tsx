@@ -1,7 +1,7 @@
 'use client';
 import ReusablePaper from '@/app/components/ReusablePaper';
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Table,
   TableBody,
@@ -13,7 +13,14 @@ import {
 } from '@/components/ui/table';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
-import { formatPrice } from '@/src/lib/utils';
+import {
+  formatPrice,
+  friendlyFormatPrice,
+  friendlyFormatter,
+  percentageFormatter,
+} from '@/src/lib/utils';
+
+export const dynamic = 'force-dynamic';
 
 type Coin = {
   id: string;
@@ -76,6 +83,8 @@ const MarketPage = () => {
   } = useQuery<Coin[]>({
     queryKey: ['cryptomarket'],
     queryFn: fetchCryptoMarket,
+    refetchInterval: 10000,
+    staleTime: 0,
   });
 
   if (isLoading) return <p>Loading...</p>;
@@ -112,7 +121,7 @@ const MarketPage = () => {
                 <TableHead>Rank</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Market Cap</TableHead>
-                <TableHead>24h Volume</TableHead>
+                <TableHead>24h Price Change</TableHead>
                 <TableHead>Current Price</TableHead>
                 <TableHead>24h % Change</TableHead>
               </TableRow>
@@ -136,12 +145,18 @@ const MarketPage = () => {
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell>{coin.market_cap}</TableCell>
-                  <TableCell>{coin.price_change_24h}</TableCell>
+                  <TableCell>
+                    {friendlyFormatter.format(coin.market_cap)}
+                  </TableCell>
+                  <TableCell>
+                    {formatPrice('USD', coin.price_change_24h)}
+                  </TableCell>
                   <TableCell>
                     {formatPrice('USD', coin.current_price)}
                   </TableCell>
-                  <TableCell>{coin.price_change_percentage_24h}</TableCell>
+                  <TableCell>
+                    {percentageFormatter(coin.price_change_percentage_24h)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
