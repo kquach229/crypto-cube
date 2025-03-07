@@ -20,6 +20,7 @@ import {
   friendlyFormatter,
   percentageFormatter,
 } from '@/src/lib/utils';
+import SparklineChart from '@/app/components/SparklineChart';
 
 export const dynamic = 'force-dynamic';
 
@@ -53,12 +54,18 @@ type Coin = {
     currency: string;
     percentage: number;
   };
+  sparkline_in_7d: {
+    price: number[];
+    symbol: string;
+    total_supply: number;
+    total_volume: number;
+  };
   last_updated: string;
 };
 
 const fetchCryptoMarket = async (): Promise<Coin[]> => {
   const response = await fetch(
-    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd'
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true'
   );
   const data: Coin[] = await response.json();
   console.log(data);
@@ -74,6 +81,7 @@ const fetchCryptoMarket = async (): Promise<Coin[]> => {
     circulating_supply: coin.circulating_supply,
     price_change_24h: coin.price_change_24h,
     price_change_percentage_24h: coin.price_change_percentage_24h,
+    sparkline_in_7d: coin.sparkline_in_7d.price,
   }));
 };
 
@@ -145,6 +153,7 @@ const MarketPage = () => {
                 <TableHead>24h Price Change</TableHead>
                 <TableHead>Current Price</TableHead>
                 <TableHead>24h % Change</TableHead>
+                <TableHead>7D Trend</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -193,6 +202,9 @@ const MarketPage = () => {
                           : 'text-red-500'
                       }>
                       {percentageFormatter(coin.price_change_percentage_24h)}
+                    </TableCell>
+                    <TableCell>
+                      <SparklineChart data={coin.sparkline_in_7d} />
                     </TableCell>
                   </TableRow>
                 ))}

@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import Header from './components/Header';
 import QueryProvider from '@/components/QueryProvider'; // Import new QueryProvider component
+import Script from 'next/script';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -21,6 +22,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang='en' suppressHydrationWarning>
+      <head>
+        <Script src='echarts.js'></Script>
+      </head>
       <body className={`${poppins.className} antialiased min-h-screen`}>
         <QueryProvider>
           <ThemeProvider
