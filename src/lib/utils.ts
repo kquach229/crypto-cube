@@ -18,5 +18,5 @@ export const friendlyFormatter = new Intl.NumberFormat('en-US', {
 
 export const percentageFormatter = (percent: number) => {
   const sign = percent >= 0 ? '+' : '';
-  return `${sign + percent.toFixed(2)}`;
+  return `${sign + percent.toFixed(2)}%`;
 };

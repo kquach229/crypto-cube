@@ -175,13 +175,23 @@ const MarketPage = () => {
                     <TableCell>
                       {friendlyFormatter.format(coin.market_cap)}
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                      className={
+                        coin.price_change_24h > 0
+                          ? 'text-green-500'
+                          : 'text-red-500'
+                      }>
                       {formatPrice('USD', coin.price_change_24h)}
                     </TableCell>
                     <TableCell>
                       {formatPrice('USD', coin.current_price)}
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                      className={
+                        coin.price_change_percentage_24h > 0
+                          ? 'text-green-500'
+                          : 'text-red-500'
+                      }>
                       {percentageFormatter(coin.price_change_percentage_24h)}
                     </TableCell>
                   </TableRow>
