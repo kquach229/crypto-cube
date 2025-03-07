@@ -68,7 +68,7 @@ const fetchCryptoMarket = async (): Promise<Coin[]> => {
     'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true'
   );
   const data: Coin[] = await response.json();
-  console.log(data);
+  console.log(data, 'data');
 
   return data.map((coin: Coin) => ({
     id: coin.id,
