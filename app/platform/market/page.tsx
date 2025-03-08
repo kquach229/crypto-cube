@@ -93,7 +93,7 @@ const MarketPage = () => {
   } = useQuery<Coin[]>({
     queryKey: ['cryptomarket'],
     queryFn: fetchCryptoMarket,
-    refetchInterval: 10000,
+    refetchInterval: 60000,
     staleTime: 0,
   });
 
@@ -182,7 +182,7 @@ const MarketPage = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {friendlyFormatter.format(coin.market_cap)}
+                      ${friendlyFormatter.format(coin.market_cap)}
                     </TableCell>
                     <TableCell
                       className={
