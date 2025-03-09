@@ -3,7 +3,10 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ReusablePaper from '@/app/components/ReusablePaper';
-import ReusableCardCarousel from '@/app/components/ReusableCardCarousel';
+
+import { Card, CardContent } from '@/components/ui/card';
+import Image from 'next/image';
+import { ellipse } from '@/src/lib/utils';
 
 interface PriceChangePercentage24h {
   [currency: string]: number;
@@ -90,13 +93,82 @@ const TrendingPage = () => {
 
   const { coins, nfts } = data;
 
+  console.log(coins, nfts);
+
   return (
-    <div>
+    <div className='min-h-screen'>
       <ReusablePaper>Trending</ReusablePaper>
-      <ReusablePaper>
-        <ReusableCardCarousel title='Coins' data={coins} />
-        <ReusableCardCarousel isNft title='Nfts' data={nfts} />
-      </ReusablePaper>
+      <div className='p-5'>
+        <div>Trending Coins</div>
+        <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
+          {coins.map((coin) => (
+            <Card className={`relative h-[8rem]`}>
+              <CardContent className='p-5'>
+                <div className='flex items-center gap-10'>
+                  <div className='flex items-center w-full gap-5'>
+                    <Image
+                      className='w-[300] h-[150] rounded-full'
+                      width={50}
+                      height={50}
+                      src={coin.item.large}
+                      alt={coin.item.name}
+                    />
+                    <div className='flex-col flex'>
+                      <span className='font-semibold'>
+                        {ellipse(coin.item.name)}
+                      </span>
+                      <span className='text-sm'>{coin.item.symbol}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <Image
+                      src={coin.item.data.sparkline}
+                      height={100}
+                      width={100}
+                      alt={coin.item.name}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <div className='p-5'>
+        <div>Trending NFTs</div>
+        <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
+          {nfts.map((nft) => (
+            <Card className={`relative h-[8rem]`}>
+              <CardContent className='p-5'>
+                <div className='flex items-center gap-10'>
+                  <div className='flex items-center w-full gap-5'>
+                    <Image
+                      className='w-[300] h-[150] rounded-full'
+                      width={50}
+                      height={50}
+                      src={nft.thumb}
+                      alt={nft.name}
+                    />
+                    <div className='flex-col flex'>
+                      <span className='font-semibold'>{ellipse(nft.name)}</span>
+                      <span className='text-sm'>{nft.symbol}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <Image
+                      src={nft.data.sparkline}
+                      height={100}
+                      width={100}
+                      alt={nft.name}
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
