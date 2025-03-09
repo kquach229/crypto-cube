@@ -16,6 +16,7 @@ import {
 import Image from 'next/image';
 import { Search } from 'lucide-react';
 import {
+  ellipse,
   formatPrice,
   friendlyFormatter,
   percentageFormatter,
@@ -65,7 +66,7 @@ type Coin = {
 
 const fetchCryptoMarket = async (): Promise<Coin[]> => {
   const response = await fetch(
-    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true'
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true&days=7&interval=daily'
   );
   const data: Coin[] = await response.json();
   console.log(data, 'data');
@@ -150,8 +151,9 @@ const MarketPage = () => {
                 <TableHead>Rank</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Market Cap</TableHead>
-                <TableHead>24h Price Change</TableHead>
+                <TableHead>Circulating Supply</TableHead>
                 <TableHead>Current Price</TableHead>
+                <TableHead>24h Price Change</TableHead>
                 <TableHead>24h % Change</TableHead>
                 <TableHead>7D Trend</TableHead>
               </TableRow>
@@ -166,23 +168,33 @@ const MarketPage = () => {
                 .map((coin) => (
                   <TableRow key={coin.id}>
                     <TableCell>{coin.rank}</TableCell>
-                    <TableCell className='flex gap-2'>
-                      <Image
-                        className='rounded-3xl'
-                        src={coin.image}
-                        height={35}
-                        width={35}
-                        alt={coin.name}
-                      />
-                      <div className='flex flex-col justify-center'>
-                        <span className='font-semibold'>{coin.name}</span>
-                        <span className='text-xs'>
-                          {coin.symbol.toUpperCase()}
-                        </span>
+                    <TableCell>
+                      <div className='flex items-center align-middle gap-2 w-[10rem]'>
+                        <Image
+                          className='rounded-3xl'
+                          src={coin.image}
+                          height={35}
+                          width={35}
+                          alt={coin.name}
+                        />
+                        <div className='flex flex-col justify-around'>
+                          <span className='font-semibold'>
+                            {ellipse(coin.name)}
+                          </span>
+                          <span className='text-xs'>
+                            {coin.symbol.toUpperCase()}
+                          </span>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>
                       ${friendlyFormatter.format(coin.market_cap)}
+                    </TableCell>
+                    <TableCell>
+                      {friendlyFormatter.format(coin.circulating_supply)}
+                    </TableCell>
+                    <TableCell>
+                      {formatPrice('USD', coin.current_price)}
                     </TableCell>
                     <TableCell
                       className={
@@ -191,9 +203,6 @@ const MarketPage = () => {
                           : 'text-red-500'
                       }>
                       {formatPrice('USD', coin.price_change_24h)}
-                    </TableCell>
-                    <TableCell>
-                      {formatPrice('USD', coin.current_price)}
                     </TableCell>
                     <TableCell
                       className={
@@ -204,7 +213,9 @@ const MarketPage = () => {
                       {percentageFormatter(coin.price_change_percentage_24h)}
                     </TableCell>
                     <TableCell>
-                      <SparklineChart data={coin.sparkline_in_7d} />
+                      <div className='h-full'>
+                        <SparklineChart data={coin.sparkline_in_7d} />
+                      </div>
                     </TableCell>
                   </TableRow>
                 ))}

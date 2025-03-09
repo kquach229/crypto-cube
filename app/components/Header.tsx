@@ -1,5 +1,6 @@
 import { ModeToggle } from '@/components/ModeToggle';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const Header = () => {
@@ -16,6 +17,8 @@ const Header = () => {
         <h1 className='ml-2 font-bold'>CryptoCube</h1>
       </div>
       <div className='relative flex gap-5 items-center'>
+        <Link href={'/platform/market'}>Market</Link>
+        <Link href={'/platform/trending'}>Trending</Link>
         <ModeToggle />
       </div>
     </nav>
