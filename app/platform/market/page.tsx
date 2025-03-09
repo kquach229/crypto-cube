@@ -213,7 +213,7 @@ const MarketPage = () => {
                       {percentageFormatter(coin.price_change_percentage_24h)}
                     </TableCell>
                     <TableCell>
-                      <div className='h-full'>
+                      <div className='max-h-10'>
                         <SparklineChart data={coin.sparkline_in_7d} />
                       </div>
                     </TableCell>
