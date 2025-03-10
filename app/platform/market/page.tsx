@@ -23,6 +23,7 @@ import {
 } from '@/src/lib/utils';
 import SparklineChart from '@/app/components/SparklineChart';
 import { Metadata } from 'next';
+import Loading from '@/app/loading';
 
 export const dynamic = 'force-dynamic';
 
@@ -114,7 +115,7 @@ const MarketPage = () => {
     replace(`${pathname}?${params.toString()}`);
   }, 300);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loading />;
   if (error) return <p>Error</p>;
 
   const searchQuery = searchParams.get('query')?.toLocaleLowerCase() || '';

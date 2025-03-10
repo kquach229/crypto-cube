@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ReusablePaper from '@/app/components/ReusablePaper';
 import {
@@ -11,6 +11,9 @@ import {
 import Image from 'next/image';
 import { ellipse } from '@/src/lib/utils';
 import Link from 'next/link';
+import { SkeletonCard } from '@/app/components/ReusableSkeleton';
+import { SquareLoader } from 'react-spinners';
+import Loading from '@/app/loading';
 
 const fetchNews = async () => {
   const response = await fetch(
@@ -29,7 +32,7 @@ const NewsPage = () => {
     refetchInterval: 100000,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error</div>;
 
   return (
@@ -51,33 +54,35 @@ const NewsPage = () => {
             ).toLocaleDateString('en-US');
 
             return (
-              <Card>
-                <CardContent className='mx-auto'>
-                  <div className='h-[200] w-auto'>
-                    <Image
-                      className='rounded-sm'
-                      src={news.IMAGE_URL}
-                      height={300}
-                      width={700}
-                      alt={news.TITLE}
-                    />
-                  </div>
-                  <div>
-                    <h1 className='font-bold mt-5 text-left'>{news.TITLE}</h1>
-                    <div className='mt-2 text-xs opacity-75'>
-                      <h5>Published {publishedDate}</h5>
+              <Suspense fallback={<SkeletonCard />}>
+                <Card>
+                  <CardContent className='mx-auto'>
+                    <div className='h-[200] w-auto'>
+                      <Image
+                        className='rounded-sm'
+                        src={news.IMAGE_URL}
+                        height={300}
+                        width={700}
+                        alt={news.TITLE}
+                      />
                     </div>
-                    <div className='mt-5'>{ellipse(news.BODY, 155)}</div>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <div className='flex justify-between w-full'>
-                    <Link href={news.URL} target='_blank'>
-                      <h5 className='text-blue-500 font-sans'>Read More</h5>
-                    </Link>
-                  </div>
-                </CardFooter>
-              </Card>
+                    <div>
+                      <h1 className='font-bold mt-5 text-left'>{news.TITLE}</h1>
+                      <div className='mt-2 text-xs opacity-75'>
+                        <h5>Published {publishedDate}</h5>
+                      </div>
+                      <div className='mt-5'>{ellipse(news.BODY, 155)}</div>
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <div className='flex justify-between w-full'>
+                      <Link href={news.URL} target='_blank'>
+                        <h5 className='text-blue-500 font-sans'>Read More</h5>
+                      </Link>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Suspense>
             );
           })}
       </div>

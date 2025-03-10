@@ -7,6 +7,7 @@ import ReusablePaper from '@/app/components/ReusablePaper';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { ellipse } from '@/src/lib/utils';
+import Loading from '@/app/loading';
 
 interface PriceChangePercentage24h {
   [currency: string]: number;
@@ -88,12 +89,10 @@ const TrendingPage = () => {
     refetchInterval: 600000,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error</div>;
 
   const { coins, nfts } = data;
-
-  console.log(coins, nfts);
 
   return (
     <div className='min-h-screen'>
