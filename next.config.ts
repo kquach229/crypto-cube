@@ -16,6 +16,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'static.coingecko.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'resources.cryptocompare.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.cryptocompare.com',
+      },
     ],
   },
 };

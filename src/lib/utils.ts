@@ -22,6 +22,8 @@ export const percentageFormatter = (percent: number) => {
   return `${sign + percent.toFixed(2)}%`;
 };
 
-export function ellipse(string: string) {
-  return string.length > 10 ? `${string.substring(0, 10)}...` : string;
+export function ellipse(string: string, charsAllowed = 10) {
+  return string.length > charsAllowed
+    ? `${string.substring(0, charsAllowed)}...`
+    : string;
 }
