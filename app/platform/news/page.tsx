@@ -32,7 +32,15 @@ const NewsPage = () => {
 
   return (
     <div>
-      <ReusablePaper>Crypto News</ReusablePaper>
+      <ReusablePaper
+        styles={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
+        <div>Crypto News</div>
+        <div>{new Date().toDateString()}</div>
+      </ReusablePaper>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5'>
         {data &&
           data.Data.map((news) => {
