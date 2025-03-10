@@ -22,6 +22,7 @@ import {
   percentageFormatter,
 } from '@/src/lib/utils';
 import SparklineChart from '@/app/components/SparklineChart';
+import { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
