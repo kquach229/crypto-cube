@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/card';
 import Image from 'next/image';
 import { ellipse } from '@/src/lib/utils';
+import Link from 'next/link';
 
 const fetchNews = async () => {
   const response = await fetch(
@@ -49,13 +50,14 @@ const NewsPage = () => {
             );
 
             return (
-              <Card key={news.ID}>
+              <Card>
                 <CardContent className='mx-auto'>
                   <div className='h-[200] w-auto'>
                     <Image
+                      className='rounded-sm'
                       src={news.IMAGE_URL}
                       height={300}
-                      width={500}
+                      width={700}
                       alt={news.TITLE}
                     />
                   </div>
@@ -66,7 +68,9 @@ const NewsPage = () => {
                 </CardContent>
                 <CardFooter>
                   <div className='flex justify-between w-full'>
-                    <h5>Learn More</h5>
+                    <Link href={news.URL} target='_blank'>
+                      <h5 className='text-blue-500 font-sans'>Learn More</h5>
+                    </Link>
                     <h5>{date}</h5>
                   </div>
                 </CardFooter>
