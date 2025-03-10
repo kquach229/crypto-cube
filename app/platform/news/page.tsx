@@ -29,7 +29,8 @@ const NewsPage = () => {
     refetchInterval: 100000,
   });
 
-  console.log(data);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
 
   return (
     <div>
@@ -45,9 +46,9 @@ const NewsPage = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5'>
         {data &&
           data.Data.map((news) => {
-            const date = new Date(news.PUBLISHED_ON * 1000).toLocaleDateString(
-              'en-US'
-            );
+            const publishedDate = new Date(
+              news.PUBLISHED_ON * 1000
+            ).toLocaleDateString('en-US');
 
             return (
               <Card>
@@ -63,15 +64,17 @@ const NewsPage = () => {
                   </div>
                   <div>
                     <h1 className='font-bold mt-5 text-left'>{news.TITLE}</h1>
+                    <div className='mt-2 text-xs opacity-75'>
+                      <h5>Published {publishedDate}</h5>
+                    </div>
                     <div className='mt-5'>{ellipse(news.BODY, 155)}</div>
                   </div>
                 </CardContent>
                 <CardFooter>
                   <div className='flex justify-between w-full'>
                     <Link href={news.URL} target='_blank'>
-                      <h5 className='text-blue-500 font-sans'>Learn More</h5>
+                      <h5 className='text-blue-500 font-sans'>Read More</h5>
                     </Link>
-                    <h5>{date}</h5>
                   </div>
                 </CardFooter>
               </Card>
