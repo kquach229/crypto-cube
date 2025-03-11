@@ -176,7 +176,7 @@ const MarketPage = () => {
                   <TableRow
                     key={coin.id}
                     onClick={() => handleClickCoinRow(coin.id)}
-                    className='w-full'>
+                    className='w-full cursor-pointer'>
                     <TableCell>{coin.rank}</TableCell>
                     <TableCell>
                       <div className='flex items-center align-middle gap-2 w-[10rem]'>

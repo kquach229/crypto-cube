@@ -1,25 +1,50 @@
+'use client';
 import ReusablePaper from '@/app/components/ReusablePaper';
-import React from 'react';
+import Loading from '@/app/loading';
+import { ellipse } from '@/src/lib/utils';
+import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+import React, { use } from 'react';
+import CoinDetailsSidebar from './CoinDetailsSidebar';
+import CoinDetailsHeader from './CoinDetailsHeader';
 
-const fetchCoinData = async (coinId) => {
-  const response = await fetch(
+const fetchCoinDetails = async (coinId) => {
+  const coinDataResponse = await fetch(
     `https://api.coingecko.com/api/v3/coins/${coinId}`
   );
+  const coinPriceResponse = await fetch(
+    `https://api.coingecko.com/api/v3/simple/price?&vs_currencies=usd&ids=${coinId}`
+  );
 
-  return response.json();
+  const coinData = await coinDataResponse.json();
+  const coinPriceData = await coinPriceResponse.json();
+  return { ...coinData, ...coinPriceData[coinId] };
 };
 
-const CoinPage = async ({ params }) => {
-  const coinData = await fetchCoinData(params.coinId);
+const CoinPage = ({ params }) => {
+  const { coinId } = use(params);
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['fetchcoin', coinId],
+    queryFn: () => fetchCoinDetails(coinId),
+    staleTime: 60000,
+  });
 
-  console.log(coinData);
+  if (isLoading) return <Loading />;
+  if (error) return <div>Error...</div>;
 
   return (
     <div>
-      <ReusablePaper>{coinData.name}</ReusablePaper>
       <ReusablePaper>
-        <div>{coinData.description.en}</div>
+        <CoinDetailsHeader allDetails={data} />
       </ReusablePaper>
+
+      <div className='grid grid-cols-12 w-full'>
+        <div className='col-span-5'>
+          <ReusablePaper styles={{ marginTop: 15 }}>
+            <CoinDetailsSidebar allDetails={data} />
+          </ReusablePaper>
+        </div>
+      </div>
     </div>
   );
 };

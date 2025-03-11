@@ -27,3 +27,9 @@ export function ellipse(string: string, charsAllowed = 10) {
     ? `${string.substring(0, charsAllowed)}...`
     : string;
 }
+
+export const getHostName = (url: string) => {
+  const regex = /^(?:https?:\/\/)?(?:www\.)?([^\/]+)/i;
+  const match = url.match(regex);
+  return match ? match[1] : null; // Return the domain if found
+};

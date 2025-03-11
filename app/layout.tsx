@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
-        <Script src='echarts.js'></Script>
+        <Script type='text/jsx' src='echarts.js'></Script>
       </head>
       <body className={`${poppins.className} antialiased min-h-screen`}>
         <QueryProvider>
