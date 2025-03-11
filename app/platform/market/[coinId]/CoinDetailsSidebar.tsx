@@ -195,7 +195,7 @@ const CoinDetailsSidebar = ({ allDetails }) => {
         </div>
         <div className='flex justify-between'>
           <span>Genesis Date</span>
-          <span>{genesis_date}</span>
+          <span>{genesis_date || 'N/A'}</span>
         </div>
       </div>
     </div>
