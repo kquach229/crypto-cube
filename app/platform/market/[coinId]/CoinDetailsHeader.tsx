@@ -20,12 +20,14 @@ const CoinDetailsHeader = ({ allDetails }) => {
         </div>
       </div>
       <div>
-        <h5 className='text-2xl'>{formatPrice('USD', allDetails.usd)}</h5>
+        <h5 className='text-2xl text-right'>
+          {formatPrice('USD', allDetails.usd)}
+        </h5>
         <h5
           className={`text-right ${
             market_data.price_change_24h > 0 ? 'text-green-500' : 'text-red-500'
           }`}>
-          ${market_data.price_change_24h}
+          {`${formatPrice('USD', market_data.price_change_24h)} (24h Change)`}
         </h5>
       </div>
     </div>

@@ -188,7 +188,10 @@ const CoinDetailsSidebar = ({ allDetails }) => {
 
         <div className='flex justify-between'>
           <span>Block Time</span>
-          <span>{block_time_in_minutes} minutes</span>
+          <span>
+            {block_time_in_minutes}{' '}
+            {block_time_in_minutes > 1 ? 'minutes' : 'minute'}
+          </span>
         </div>
         <div className='flex justify-between'>
           <span>Genesis Date</span>
