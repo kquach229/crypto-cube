@@ -12,7 +12,6 @@ export default function Home() {
         Stay Ahead With <h5 className='font-extrabold'>CryptoCube </h5>
         <DotLottieReact
           className='absolute top-[25rem] md:top-[5rem] md:right-[0rem]'
-          color='oklch(90.74% 0.0267 138.3)'
           src='/cube-lottie'
           loop
           autoplay

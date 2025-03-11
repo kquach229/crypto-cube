@@ -24,6 +24,7 @@ import {
 import SparklineChart from '@/app/components/SparklineChart';
 import { Metadata } from 'next';
 import Loading from '@/app/loading';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -102,7 +103,7 @@ const MarketPage = () => {
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
 
   const handleSearch = useDebouncedCallback((searchTerm: string) => {
     const params = new URLSearchParams(searchParams);
@@ -119,6 +120,10 @@ const MarketPage = () => {
   if (error) return <p>Error</p>;
 
   const searchQuery = searchParams.get('query')?.toLocaleLowerCase() || '';
+
+  const handleClickCoinRow = (coinId) => {
+    push(`/platform/market/${coinId}`);
+  };
 
   return (
     <div className='gap-5 flex flex-col'>
@@ -168,7 +173,10 @@ const MarketPage = () => {
                     coin.symbol.toLowerCase().includes(searchQuery)
                 )
                 .map((coin) => (
-                  <TableRow key={coin.id}>
+                  <TableRow
+                    key={coin.id}
+                    onClick={() => handleClickCoinRow(coin.id)}
+                    className='w-full'>
                     <TableCell>{coin.rank}</TableCell>
                     <TableCell>
                       <div className='flex items-center align-middle gap-2 w-[10rem]'>
