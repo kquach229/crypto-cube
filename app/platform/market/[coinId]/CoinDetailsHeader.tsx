@@ -4,6 +4,7 @@ import React from 'react';
 
 const CoinDetailsHeader = ({ allDetails }) => {
   const { symbol, name, image, market_data } = allDetails;
+
   return (
     <div className='flex w-full justify-between items-center'>
       <div className='flex items-center align-middle gap-2 w-[10rem]'>

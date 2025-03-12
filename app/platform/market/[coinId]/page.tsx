@@ -7,6 +7,7 @@ import Image from 'next/image';
 import React, { use } from 'react';
 import CoinDetailsSidebar from './CoinDetailsSidebar';
 import CoinDetailsHeader from './CoinDetailsHeader';
+import ReusableHistoryChart from '@/app/components/ReusableHistoryChart';
 
 const fetchCoinDetails = async (coinId) => {
   const coinDataResponse = await fetch(
@@ -42,6 +43,11 @@ const CoinPage = ({ params }) => {
         <div className='col-span-5'>
           <ReusablePaper styles={{ marginTop: 15 }}>
             <CoinDetailsSidebar allDetails={data} />
+          </ReusablePaper>
+        </div>
+        <div className='col-span-7'>
+          <ReusablePaper styles={{ marginTop: 15 }}>
+            <ReusableHistoryChart coinId={coinId} />
           </ReusablePaper>
         </div>
       </div>
