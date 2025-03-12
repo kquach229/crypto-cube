@@ -4,12 +4,10 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useTheme } from 'next-themes';
 
 export default function Home() {
-  const { theme, setTheme } = useTheme();
-
   return (
     <div className='relative h-100 mx-auto w-full text-center flex flex-col justify-center'>
       <h1 className='text-[5rem]'>
-        Stay Ahead With <h5 className='font-extrabold'>CryptoCube </h5>
+        Stay Ahead With <span className='font-extrabold'>CryptoCube </span>
         <DotLottieReact
           className='absolute top-[25rem] md:top-[5rem] md:right-[0rem]'
           src='/cube-lottie'

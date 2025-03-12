@@ -8,6 +8,7 @@ import React, { use } from 'react';
 import CoinDetailsSidebar from './CoinDetailsSidebar';
 import CoinDetailsHeader from './CoinDetailsHeader';
 import ReusableHistoryChart from '@/app/components/ReusableHistoryChart';
+import CoinDetailsFooter from './CoinDetailsFooter';
 
 const fetchCoinDetails = async (coinId) => {
   const coinDataResponse = await fetch(
@@ -39,15 +40,29 @@ const CoinPage = ({ params }) => {
         <CoinDetailsHeader allDetails={data} />
       </ReusablePaper>
 
-      <div className='grid grid-cols-12 w-full'>
-        <div className='col-span-5'>
-          <ReusablePaper styles={{ marginTop: 15 }}>
+      <div className='grid grid-cols-12 w-full gap-5'>
+        <div className='col-span-12 md:col-span-4'>
+          <ReusablePaper
+            styles={{ marginTop: 15, height: '600px', overflowY: 'scroll' }}>
             <CoinDetailsSidebar allDetails={data} />
           </ReusablePaper>
         </div>
-        <div className='col-span-7'>
-          <ReusablePaper styles={{ marginTop: 15 }}>
+        <div className='col-span-12 md:col-span-8'>
+          <ReusablePaper
+            styles={{
+              marginTop: 15,
+              height: '600px',
+              padding: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+            }}>
             <ReusableHistoryChart coinId={coinId} />
+          </ReusablePaper>
+        </div>
+        <div className='col-span-12'>
+          <ReusablePaper>
+            <CoinDetailsFooter allDetails={data} />
           </ReusablePaper>
         </div>
       </div>

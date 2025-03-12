@@ -101,7 +101,7 @@ const TrendingPage = () => {
         <div>Trending Coins</div>
         <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
           {coins.map((coin) => (
-            <Card className={`relative h-[8rem]`}>
+            <Card key={coin.id} className={`relative h-[8rem]`}>
               <CardContent className='p-5'>
                 <div className='flex items-center gap-10'>
                   <div className='flex items-center w-full gap-5'>
