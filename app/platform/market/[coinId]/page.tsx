@@ -2,7 +2,7 @@
 import ReusablePaper from '@/app/components/ReusablePaper';
 import Loading from '@/app/loading';
 import { useQuery } from '@tanstack/react-query';
-import React, { use } from 'react';
+import React from 'react';
 import CoinDetailsSidebar from './CoinDetailsSidebar';
 import CoinDetailsHeader from './CoinDetailsHeader';
 import ReusableHistoryChart from '@/app/components/ReusableHistoryChart';
