@@ -2,7 +2,6 @@
 import ReusablePaper from '@/app/components/ReusablePaper';
 import Loading from '@/app/loading';
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 import React from 'react';
 import CoinDetailsSidebar from './CoinDetailsSidebar';
 import CoinDetailsHeader from './CoinDetailsHeader';

@@ -1,4 +1,3 @@
-import { Coin } from '@/app/types/types';
 import React from 'react';
 import { CoinDetails } from './page';
 

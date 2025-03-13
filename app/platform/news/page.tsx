@@ -65,8 +65,6 @@ const NewsPage = () => {
   if (isLoading) return <Loading />;
   if (error) return <Error />;
 
-  console.log(data);
-
   return (
     <div>
       <ReusablePaper
@@ -86,7 +84,7 @@ const NewsPage = () => {
             ).toLocaleDateString('en-US');
 
             return (
-              <Card>
+              <Card key={news.ID}>
                 <CardContent className='mx-auto'>
                   <div className='h-[200] w-auto'>
                     <Image
