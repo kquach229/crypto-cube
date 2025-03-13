@@ -27,7 +27,7 @@ import Error from '@/app/error';
 
 export const dynamic = 'force-dynamic';
 
-type Coin = {
+export type Coin = {
   id: string;
   symbol: string;
   name: string;
@@ -53,7 +53,7 @@ type Coin = {
   atl_change_percentage?: number; // Make atl_change_percentage optional
   atl_date?: string; // Make atl_date optional
   roi?: { times: number; currency: string; percentage: number } | null; // Make roi optional
-  sparkline_in_7d: number[];
+  sparkline_in_7d: { price: number[] } | []; // Ensure it's an object with a `price` array
   last_updated: string;
 };
 
@@ -62,7 +62,7 @@ const fetchCryptoMarket = async (): Promise<Coin[]> => {
     'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true&days=7&interval=daily'
   );
   const data = await response.json();
-  return data.map((coin: any) => ({
+  return data.map((coin: Coin) => ({
     id: coin.id,
     symbol: coin.symbol,
     name: coin.name,
@@ -73,7 +73,7 @@ const fetchCryptoMarket = async (): Promise<Coin[]> => {
     circulating_supply: coin.circulating_supply,
     price_change_24h: coin.price_change_24h,
     price_change_percentage_24h: coin.price_change_percentage_24h,
-    sparkline_in_7d: coin.sparkline_in_7d?.price ?? [], // <-- Fix applied
+    sparkline_in_7d: coin.sparkline_in_7d ?? [],
     last_updated: coin.last_updated,
   }));
 };
@@ -88,6 +88,8 @@ const MarketPage = () => {
     queryFn: fetchCryptoMarket,
     refetchInterval: 60000,
   });
+
+  console.log(coinsData);
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -212,7 +214,13 @@ const MarketPage = () => {
                     </TableCell>
                     <TableCell>
                       <div className='max-h-10'>
-                        <SparklineChart data={coin.sparkline_in_7d} />
+                        <SparklineChart
+                          data={
+                            Array.isArray(coin.sparkline_in_7d)
+                              ? []
+                              : coin.sparkline_in_7d.price
+                          }
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
