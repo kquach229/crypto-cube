@@ -96,6 +96,7 @@ const NewsPage = () => {
                       src={news.IMAGE_URL}
                       height={700}
                       width={700}
+                      style={{ objectFit: 'contain' }}
                       alt={news.TITLE}
                     />
                   </div>
