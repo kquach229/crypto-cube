@@ -3,45 +3,39 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ReusablePaper from '@/app/components/ReusablePaper';
-
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { ellipse } from '@/src/lib/utils';
 import Loading from '@/app/loading';
+import Error from '@/app/error';
 
 interface PriceChangePercentage24h {
   [currency: string]: number;
 }
 
-interface CoinData {
+type CoinMarketData = {
   price: number;
   price_btc: string;
   price_change_percentage_24h: PriceChangePercentage24h;
   market_cap: string;
   market_cap_btc: string;
-  total_volume: string;
-  total_volume_btc: string;
   sparkline: string;
-  content?: {
-    title: string;
-    description: string;
-  } | null;
-}
+};
 
-interface CoinItem {
-  id: string;
+type CoinItem = {
   coin_id: number;
-  name: string;
-  symbol: string;
-  market_cap_rank: number;
-  thumb: string;
-  small: string;
+  data: CoinMarketData;
+  id: string;
   large: string;
-  slug: string;
-  price_btc: number;
+  market_cap_rank: number;
+  name: string;
+  price_btc: string;
   score: number;
-  data: CoinData;
-}
+  slug: string;
+  small: string;
+  symbol: string;
+  thumb: string;
+};
 
 interface Coin {
   item: CoinItem;
@@ -69,12 +63,12 @@ interface NFTItem {
   data: NFTData;
 }
 
-interface CryptoData {
+interface TrendingData {
   coins: Coin[];
   nfts: NFTItem[];
 }
 
-const fetchTrending = async () => {
+const fetchTrending = async (): Promise<TrendingData> => {
   const response = await fetch(
     'https://api.coingecko.com/api/v3/search/trending'
   );
@@ -82,17 +76,17 @@ const fetchTrending = async () => {
   return data;
 };
 
-const TrendingPage = () => {
-  const { data, isLoading, error } = useQuery({
+const TrendingPage: React.FC = () => {
+  const { data, isLoading, error } = useQuery<TrendingData>({
     queryKey: ['gettrending'],
     queryFn: fetchTrending,
     refetchInterval: 600000,
   });
 
   if (isLoading) return <Loading />;
-  if (error) return <div>Error</div>;
+  if (error) return <Error />;
 
-  const { coins, nfts } = data;
+  const { coins, nfts } = data || { coins: [], nfts: [] };
 
   return (
     <div className='min-h-screen'>
@@ -101,7 +95,7 @@ const TrendingPage = () => {
         <div>Trending Coins</div>
         <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
           {coins.map((coin) => (
-            <Card key={coin.id} className={`relative h-[8rem]`}>
+            <Card key={coin.item.coin_id} className={`relative h-[8rem]`}>
               <CardContent className='p-5'>
                 <div className='flex items-center gap-10'>
                   <div className='flex items-center w-full gap-5'>
@@ -138,7 +132,7 @@ const TrendingPage = () => {
         <div>Trending NFTs</div>
         <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
           {nfts.map((nft) => (
-            <Card className={`relative h-[8rem]`}>
+            <Card key={nft.id} className={`relative h-[8rem]`}>
               <CardContent className='p-5'>
                 <div className='flex items-center gap-10'>
                   <div className='flex items-center w-full gap-5'>

@@ -1,16 +1,65 @@
 'use client';
 import ReusablePaper from '@/app/components/ReusablePaper';
 import Loading from '@/app/loading';
-import { ellipse } from '@/src/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
-import React, { use } from 'react';
+import React from 'react';
 import CoinDetailsSidebar from './CoinDetailsSidebar';
 import CoinDetailsHeader from './CoinDetailsHeader';
 import ReusableHistoryChart from '@/app/components/ReusableHistoryChart';
 import CoinDetailsFooter from './CoinDetailsFooter';
+import Error from '@/app/error';
 
-const fetchCoinDetails = async (coinId) => {
+// Define the shape of the data returned from the fetchCoinDetails function
+export type CoinDetails = {
+  id: string;
+  name: string;
+  symbol: string;
+  asset_platform_id?: string;
+  country_origin?: string;
+  description?: { en: string }; // Assuming it's an object with an 'en' property
+  detail_platforms?: Record<string, unknown>;
+  categories: string[];
+  block_time_in_minutes: number;
+  genesis_date: string;
+  links: {
+    homepage: string[];
+    blockchain_site: string[];
+  };
+  market_data: {
+    total_supply: number;
+    circulating_supply: number;
+    price_change_percentage_24h: number;
+    price_change_percentage_7d: number;
+    price_change_percentage_14d: number;
+    price_change_percentage_30d: number;
+    price_change_percentage_1y: number;
+    price_change_24h: number;
+  };
+  community_data: {
+    twitter_followers: number;
+  };
+  watchlist_portfolio_users: number;
+  usd: number;
+  market_cap_rank: number;
+  // Missing Fields
+  developer_data?: Record<string, unknown>;
+  hashing_algorithm?: string;
+  image: {
+    thumb: string;
+    small: string;
+    large: string;
+  };
+  last_updated: string;
+};
+
+type CoinPageProps = {
+  params: {
+    coinId: string;
+  };
+};
+
+const fetchCoinDetails = async (coinId: string): Promise<CoinDetails> => {
   const coinDataResponse = await fetch(
     `https://api.coingecko.com/api/v3/coins/${coinId}`
   );
@@ -20,19 +69,36 @@ const fetchCoinDetails = async (coinId) => {
 
   const coinData = await coinDataResponse.json();
   const coinPriceData = await coinPriceResponse.json();
-  return { ...coinData, ...coinPriceData[coinId] };
+
+  // Merge coin data with price data explicitly
+  return {
+    ...coinData,
+    usd: coinPriceData[coinId]?.usd || 0, // Ensure we get USD price or default to 0
+  };
 };
 
-const CoinPage = ({ params }) => {
-  const { coinId } = use(params);
-  const { data, isLoading, error } = useQuery({
+const CoinPage: React.FC<CoinPageProps> = ({ params }) => {
+  const { coinId } = params;
+  const { data, isLoading, error } = useQuery<CoinDetails>({
     queryKey: ['fetchcoin', coinId],
     queryFn: () => fetchCoinDetails(coinId),
     staleTime: 60000,
   });
 
-  if (isLoading) return <Loading />;
-  if (error) return <div>Error...</div>;
+  if (!data || isLoading)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  if (error)
+    return (
+      <div>
+        <Error />
+      </div>
+    );
+
+  console.log(data);
 
   return (
     <div>

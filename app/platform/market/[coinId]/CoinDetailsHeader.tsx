@@ -1,8 +1,9 @@
 import { ellipse, formatPrice } from '@/src/lib/utils';
 import Image from 'next/image';
 import React from 'react';
+import { CoinDetails } from './page';
 
-const CoinDetailsHeader = ({ allDetails }) => {
+const CoinDetailsHeader = ({ allDetails }: { allDetails: CoinDetails }) => {
   const { symbol, name, image, market_data } = allDetails;
 
   return (

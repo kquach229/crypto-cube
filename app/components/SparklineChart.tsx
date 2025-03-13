@@ -2,10 +2,11 @@
 
 import ReactECharts from 'echarts-for-react';
 import { useMemo } from 'react';
+import { EChartsOption } from 'echarts';
 
 const SparklineChart = ({ data }: { data: number[] }) => {
   const isPriceUp = useMemo(() => data[0] < data[data.length - 1], [data]);
-  const option = {
+  const option: EChartsOption = {
     animation: true,
     xAxis: { type: 'category', show: false },
     yAxis: { type: 'value', show: false },

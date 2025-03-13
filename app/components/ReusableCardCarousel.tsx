@@ -9,7 +9,31 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 
-const ReusableCardCarousel = ({ title, data, isNft, styles }) => {
+// Define types for the data
+interface Item {
+  id: string;
+  thumb: string;
+  name: string;
+  symbol: string;
+  data: {
+    floor_price?: number;
+    price?: number;
+  };
+}
+
+interface ReusableCardCarouselProps {
+  title: string;
+  data: Item[]; // Array of items with the structure defined above
+  isNft: boolean;
+  styles?: React.CSSProperties; // Optional style prop
+}
+
+const ReusableCardCarousel: React.FC<ReusableCardCarouselProps> = ({
+  title,
+  data,
+  isNft,
+  styles,
+}) => {
   console.log(data);
   return (
     <Carousel style={styles} className='w-full max-w-lg mx-auto'>
@@ -20,7 +44,7 @@ const ReusableCardCarousel = ({ title, data, isNft, styles }) => {
         {data.map((item, index) => (
           <CarouselItem
             className='pl-2 md:pl-4'
-            key={isNft ? item.id : item.item.id}>
+            key={isNft ? item.id : item.id}>
             <div className='p-1'>
               <Card className='relative'>
                 <span className='ml-5 font-semibold bg-red-500 w-[28px] text-center text-lg rounded-xl'>
@@ -30,25 +54,25 @@ const ReusableCardCarousel = ({ title, data, isNft, styles }) => {
                   <div className='flex flex-col gap-10'>
                     <div className='flex items-center w-full gap-5'>
                       <Image
-                        className='w-[300 h-[30] rounded-full'
+                        className='w-[300] h-[100] rounded-full' // Fixed className issue
                         width={100}
                         height={100}
-                        src={isNft ? item.thumb : item.item.thumb}
-                        alt={isNft ? item.name : item.item.name}
+                        src={isNft ? item.thumb : item.thumb}
+                        alt={isNft ? item.name : item.name}
                       />
                       <div className='flex-col flex'>
                         <span className='font-semibold'>
-                          {isNft ? item.name : item.item.name}
+                          {isNft ? item.name : item.name}
                         </span>
                         <span className='text-sm'>
-                          {isNft ? item.symbol : item.item.symbol}
+                          {isNft ? item.symbol : item.symbol}
                         </span>
                       </div>
 
                       <div className='absolute top-[15px] right-[25px]'>
                         <span className='flex flex-col'>
                           <span>{isNft ? 'Floor Price' : 'Price'}</span>
-                          {isNft ? item.data.floor_price : item.item.data.price}
+                          {isNft ? item.data.floor_price : item.data.price}
                         </span>
                       </div>
                     </div>

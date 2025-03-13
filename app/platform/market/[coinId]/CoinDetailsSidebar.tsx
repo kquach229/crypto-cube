@@ -14,25 +14,59 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  ArrowBigDown,
-  ArrowDown,
-  ArrowDown01Icon,
-  ArrowDownIcon,
-} from 'lucide-react';
+import { ArrowDownIcon } from 'lucide-react';
 
-const CoinDetailsSidebar = ({ allDetails }) => {
+// Type definitions for nested objects
+interface MarketData {
+  total_supply: number;
+  circulating_supply: number;
+  price_change_percentage_24h: number;
+  price_change_percentage_1y: number;
+  price_change_percentage_7d: number;
+  price_change_percentage_14d: number;
+  price_change_percentage_30d: number;
+}
+
+interface Links {
+  homepage: string[];
+  blockchain_site: string[];
+}
+
+interface CommunityData {
+  twitter_followers: number;
+}
+
+interface CoinDetails {
+  name: string;
+  categories: string[];
+  block_time_in_minutes: number;
+  genesis_date: string | null;
+  links: Links;
+  market_data: MarketData;
+  symbol: string;
+  watchlist_portfolio_users: number;
+  usd: number;
+  market_cap_rank: number;
+  community_data: CommunityData;
+}
+
+// Define the props type for the component
+interface CoinDetailsSidebarProps {
+  allDetails: CoinDetails;
+}
+
+const CoinDetailsSidebar: React.FC<CoinDetailsSidebarProps> = ({
+  allDetails,
+}) => {
   const {
     name,
-    categories,
-    block_time_in_minutes,
 
+    block_time_in_minutes,
     genesis_date,
     links,
     market_data,
     symbol,
     watchlist_portfolio_users,
-    usd,
     market_cap_rank,
     community_data,
     market_data: {
@@ -145,10 +179,12 @@ const CoinDetailsSidebar = ({ allDetails }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {links.homepage.map((site) => (
-                <Link className='cursor-pointer' href={site} target='__blank'>
-                  <DropdownMenuItem key={site}>
-                    {getHostName(site)}
-                  </DropdownMenuItem>
+                <Link
+                  className='cursor-pointer'
+                  href={site}
+                  target='__blank'
+                  key={site}>
+                  <DropdownMenuItem>{getHostName(site)}</DropdownMenuItem>
                 </Link>
               ))}
             </DropdownMenuContent>
@@ -156,7 +192,6 @@ const CoinDetailsSidebar = ({ allDetails }) => {
         </div>
         <div className='flex justify-between'>
           <span>Blockchain Sites</span>
-
           <DropdownMenu>
             <DropdownMenuTrigger className='flex text-center gap-2'>
               <span className='text-sm'>Sites</span>
@@ -164,10 +199,12 @@ const CoinDetailsSidebar = ({ allDetails }) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {links.blockchain_site.map((site) => (
-                <Link className='cursor-pointer' href={site} target='__blank'>
-                  <DropdownMenuItem key={site}>
-                    {getHostName(site)}
-                  </DropdownMenuItem>
+                <Link
+                  className='cursor-pointer'
+                  href={site}
+                  target='__blank'
+                  key={site}>
+                  <DropdownMenuItem>{getHostName(site)}</DropdownMenuItem>
                 </Link>
               ))}
             </DropdownMenuContent>

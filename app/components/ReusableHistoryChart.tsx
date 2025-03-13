@@ -4,7 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import ReactECharts from 'echarts-for-react';
 import Loading from '../loading';
 import { Button } from '@/components/ui/button';
-
+import Error from '../error';
+import { ChartDataResponse, ReusableHistoryChartProps } from '../types/types';
+import { EChartsOption } from 'echarts';
 const INTERVALS = {
   '1D': 1,
   '1W': 7,
@@ -14,10 +16,15 @@ const INTERVALS = {
   '1Y': 365,
 };
 
-// API Fetch Function
-const getChartData = async ({ queryKey }) => {
+const getChartData = async ({
+  queryKey,
+}: {
+  queryKey: [string, string, string];
+}): Promise<[number, number][]> => {
   const [, coinId, interval] = queryKey;
-  const days = INTERVALS[interval];
+  const days = INTERVALS[interval as keyof typeof INTERVALS];
+
+  console.log(days);
 
   if (!days) {
     console.error(`Invalid interval: ${interval}`);
@@ -29,20 +36,18 @@ const getChartData = async ({ queryKey }) => {
       `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${days}`
     );
 
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.prices.map((item) => [new Date(item[0]), item[1]]);
+    const data: ChartDataResponse = await response.json();
+    return data.prices.map((item) => [new Date(item[0]).getTime(), item[1]]);
   } catch (error) {
     console.error('Fetch Error:', error);
     throw error;
   }
 };
 
-const ReusableHistoryChart = ({ coinId }) => {
-  const [selectedInterval, setSelectedInterval] = useState('1D');
+const ReusableHistoryChart: React.FC<ReusableHistoryChartProps> = ({
+  coinId,
+}) => {
+  const [selectedInterval, setSelectedInterval] = useState<string>('1D');
   const [disableIntervalSet, setDisableIntervalSet] = useState(false);
 
   // Fetch Data with Query
@@ -51,7 +56,8 @@ const ReusableHistoryChart = ({ coinId }) => {
     queryFn: getChartData,
     staleTime: 1000 * 60 * 10, // Cache for 10 minutes
     refetchOnWindowFocus: false,
-    enabled: !!coinId && !!INTERVALS[selectedInterval], // Ensure valid interval
+    enabled:
+      !!coinId && !!INTERVALS[selectedInterval as keyof typeof INTERVALS], // Ensure valid interval
   });
 
   const isPriceUp = useMemo(() => {
@@ -59,7 +65,7 @@ const ReusableHistoryChart = ({ coinId }) => {
     return data[0][1] < data[data.length - 1][1];
   }, [data]);
 
-  const handleIntervalChange = (interval) => {
+  const handleIntervalChange = (interval: string) => {
     if (interval !== selectedInterval) {
       setSelectedInterval(interval);
     }
@@ -70,86 +76,100 @@ const ReusableHistoryChart = ({ coinId }) => {
   };
 
   if (isLoading) return <Loading />;
-  if (error)
-    return (
-      <div className='text-red-500'>Failed to fetch data. Try again later.</div>
-    );
+  if (error) return <Error />;
 
-  const option = {
-    animation: true,
-    xAxis: {
-      type: 'time',
-      axisLabel: {
-        formatter: (value) => {
+  // Formatter function
+  const getDateFormatter = (interval: string) => {
+    switch (interval) {
+      case '1D':
+        return (value: number) => {
           const date = new Date(value);
-
-          // For 1D, display the time (hour:minute) if the time is available
-          if (INTERVALS['1D'] === 1) {
-            return new Intl.DateTimeFormat('en-US', {
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false, // 24-hour time format
-            }).format(date);
-          }
-
-          // For 1W, display the day of MM-DD-YYYY (showing full date)
-          if (INTERVALS['1W'] === 7) {
-            return new Intl.DateTimeFormat('en-US', {
-              weekday: 'short',
-              month: '2-digit',
-              day: '2-digit',
-              year: 'numeric',
-            }).format(date);
-          }
-
-          // For 1M, display every 7 days (month-day format)
-          if (INTERVALS['1M'] === 30) {
-            return new Intl.DateTimeFormat('en-US', {
-              month: 'short',
-              day: '2-digit',
-            }).format(date);
-          }
-
-          // For 3M, display every 20 days (month-day format)
-          if (INTERVALS['3M'] === 90) {
-            return new Intl.DateTimeFormat('en-US', {
-              month: 'short',
-              day: '2-digit',
-            }).format(date);
-          }
-
-          // For 6M, display every 50 days (month-day format)
-          if (INTERVALS['6M'] === 180) {
-            return new Intl.DateTimeFormat('en-US', {
-              month: 'short',
-              day: '2-digit',
-            }).format(date);
-          }
-
-          // For 1Y, display every 2 months (month-year format)
-          if (INTERVALS['1Y'] === 365) {
-            return new Intl.DateTimeFormat('en-US', {
-              month: 'short',
-              year: 'numeric',
-            }).format(date);
-          }
-
-          // Default format for other intervals (month-year)
+          return new Intl.DateTimeFormat('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          }).format(date);
+        };
+      case '1W':
+        return (value: number) => {
+          const date = new Date(value);
+          return new Intl.DateTimeFormat('en-US', {
+            weekday: 'short',
+            month: '2-digit',
+            day: '2-digit',
+            year: 'numeric',
+          }).format(date);
+        };
+      case '1M':
+      case '3M':
+      case '6M':
+        return (value: number) => {
+          const date = new Date(value);
+          return new Intl.DateTimeFormat('en-US', {
+            month: 'short',
+            day: '2-digit',
+          }).format(date);
+        };
+      case '1Y':
+        return (value: number) => {
+          const date = new Date(value);
           return new Intl.DateTimeFormat('en-US', {
             month: 'short',
             year: 'numeric',
           }).format(date);
+        };
+      default:
+        return (value: number) => {
+          const date = new Date(value);
+          return new Intl.DateTimeFormat('en-US', {
+            month: 'short',
+            year: 'numeric',
+          }).format(date);
+        };
+    }
+  };
+
+  // Limit the x-axis labels to 5-6 entries
+  const getLimitedData = (data: [number, number][]) => {
+    const maxLabels = 6;
+    const interval = Math.ceil(data.length / maxLabels);
+    return data.filter((_, index) => index % interval === 0);
+  };
+
+  const limitedData = getLimitedData(data || []);
+
+  const option: EChartsOption = {
+    animation: true,
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        label: {
+          backgroundColor: '#6a7985',
         },
+      },
+    },
+    toolbox: {
+      feature: {
+        saveAsImage: {},
+      },
+      bottom: 2,
+    },
+    xAxis: {
+      type: 'time', // Change this to 'time' to indicate that you're working with time-based data
+      axisLabel: {
+        formatter: getDateFormatter(selectedInterval),
         rich: { label: { color: '#666' } },
       },
+      interval: Math.ceil((data || []).length / 6),
     },
 
     yAxis: { type: 'value', show: true },
     series: [
       {
-        data,
+        data: limitedData,
         type: 'line',
-        smooth: true,
+
         areaStyle: {
           color: {
             type: 'linear',

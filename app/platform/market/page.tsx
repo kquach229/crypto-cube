@@ -1,7 +1,7 @@
 'use client';
 import ReusablePaper from '@/app/components/ReusablePaper';
-import React, { useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import {
@@ -22,9 +22,9 @@ import {
   percentageFormatter,
 } from '@/src/lib/utils';
 import SparklineChart from '@/app/components/SparklineChart';
-import { Metadata } from 'next';
 import Loading from '@/app/loading';
 import Link from 'next/link';
+import Error from '@/app/error';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,35 +35,26 @@ type Coin = {
   image: string;
   current_price: number;
   market_cap: number;
-  market_cap_rank: number;
-  rank: number;
-  fully_diluted_valuation: number | null;
-  total_volume: number;
-  high_24h: number;
-  low_24h: number;
+  market_cap_rank?: number; // Make market_cap_rank optional
+  rank?: number; // Make rank optional to handle undefined case
+  fully_diluted_valuation?: number | null; // Make fully_diluted_valuation optional
+  total_volume?: number; // Make total_volume optional
+  high_24h?: number; // Make high_24h optional
+  low_24h?: number; // Make low_24h optional
   price_change_24h: number;
   price_change_percentage_24h: number;
-  market_capchange_percentage_24h?: number; // Sometimes missing
+  market_capchange_percentage_24h?: number; // Make market_capchange_percentage_24h optional
   circulating_supply: number;
-  total_supply: number | null;
-  max_supply: number | null;
-  ath: number;
-  ath_change_percentage: number;
-  ath_date: string;
-  atl: number;
-  atl_change_percentage: number;
-  atl_date: string;
-  roi: null | {
-    times: number;
-    currency: string;
-    percentage: number;
-  };
-  sparkline_in_7d: {
-    price: number[];
-    symbol: string;
-    total_supply: number;
-    total_volume: number;
-  };
+  total_supply?: number | null; // Make total_supply optional
+  max_supply?: number | null; // Make max_supply optional
+  ath?: number; // Make ath optional
+  ath_change_percentage?: number; // Make ath_change_percentage optional
+  ath_date?: string; // Make ath_date optional
+  atl?: number; // Make atl optional
+  atl_change_percentage?: number; // Make atl_change_percentage optional
+  atl_date?: string; // Make atl_date optional
+  roi?: { times: number; currency: string; percentage: number } | null; // Make roi optional
+  sparkline_in_7d: number[];
   last_updated: string;
 };
 
@@ -71,21 +62,20 @@ const fetchCryptoMarket = async (): Promise<Coin[]> => {
   const response = await fetch(
     'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true&days=7&interval=daily'
   );
-  const data: Coin[] = await response.json();
-  console.log(data, 'data');
-
-  return data.map((coin: Coin) => ({
+  const data = await response.json();
+  return data.map((coin: any) => ({
     id: coin.id,
     symbol: coin.symbol,
     name: coin.name,
-    rank: coin.market_cap_rank,
+    rank: coin.market_cap_rank || undefined, // Handle undefined case for rank
     image: coin.image,
     current_price: coin.current_price,
     market_cap: coin.market_cap,
     circulating_supply: coin.circulating_supply,
     price_change_24h: coin.price_change_24h,
     price_change_percentage_24h: coin.price_change_percentage_24h,
-    sparkline_in_7d: coin.sparkline_in_7d.price,
+    sparkline_in_7d: coin.sparkline_in_7d?.price ?? [], // <-- Fix applied
+    last_updated: coin.last_updated,
   }));
 };
 
@@ -98,7 +88,6 @@ const MarketPage = () => {
     queryKey: ['cryptomarket'],
     queryFn: fetchCryptoMarket,
     refetchInterval: 60000,
-    staleTime: 0,
   });
 
   const searchParams = useSearchParams();
@@ -117,11 +106,11 @@ const MarketPage = () => {
   }, 300);
 
   if (isLoading) return <Loading />;
-  if (error) return <p>Error</p>;
+  if (error) return <Error />;
 
   const searchQuery = searchParams.get('query')?.toLocaleLowerCase() || '';
 
-  const handleClickCoinRow = (coinId) => {
+  const handleClickCoinRow = (coinId: string) => {
     push(`/platform/market/${coinId}`);
   };
 

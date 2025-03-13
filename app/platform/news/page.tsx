@@ -7,6 +7,43 @@ import Image from 'next/image';
 import { ellipse } from '@/src/lib/utils';
 import Link from 'next/link';
 import Loading from '@/app/loading';
+import Error from '@/app/error';
+
+interface SourceData {
+  TYPE: string;
+  ID: number;
+  SOURCE_KEY: string;
+  NAME: string;
+  IMAGE_URL: string;
+  [key: string]: any; // Allowing for additional properties in the future
+}
+
+interface CategoryData {
+  [key: string]: any; // Adjust type as needed based on the structure of individual category items
+}
+
+interface NewsItem {
+  BODY: string;
+  CATEGORY_DATA: CategoryData[];
+  CREATED_ON: number;
+  DOWNVOTES: number;
+  GUID: string;
+  ID: number;
+  IMAGE_URL: string;
+  KEYWORDS: string;
+  LANG: string;
+  PUBLISHED_ON: number;
+  SCORE: number;
+  SENTIMENT: 'NEGATIVE' | 'POSITIVE' | 'NEUTRAL';
+  SOURCE_DATA: SourceData;
+  SOURCE_ID: number;
+  STATUS: 'ACTIVE' | 'INACTIVE';
+  TITLE: string;
+  TYPE: string;
+  UPDATED_ON: number;
+  UPVOTES: number;
+  URL: string;
+}
 
 const fetchNews = async () => {
   const response = await fetch(
@@ -26,7 +63,9 @@ const NewsPage = () => {
   });
 
   if (isLoading) return <Loading />;
-  if (error) return <div>Error</div>;
+  if (error) return <Error />;
+
+  console.log(data);
 
   return (
     <div>
@@ -41,7 +80,7 @@ const NewsPage = () => {
       </ReusablePaper>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5'>
         {data &&
-          data.Data.map((news) => {
+          data.Data.map((news: NewsItem) => {
             const publishedDate = new Date(
               news.PUBLISHED_ON * 1000
             ).toLocaleDateString('en-US');
