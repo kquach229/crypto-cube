@@ -89,12 +89,12 @@ const NewsPage = () => {
 
             return (
               <Card key={news.ID}>
-                <CardContent className='mx-auto'>
-                  <div className='h-[200] w-auto'>
+                <CardContent>
+                  <div className='h-[200]'>
                     <Image
                       className='rounded-sm'
                       src={news.IMAGE_URL}
-                      height={300}
+                      height={700}
                       width={700}
                       alt={news.TITLE}
                     />
