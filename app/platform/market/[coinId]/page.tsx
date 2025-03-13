@@ -98,8 +98,6 @@ const CoinPage: React.FC<CoinPageProps> = ({ params }) => {
       </div>
     );
 
-  console.log(data);
-
   return (
     <div>
       <ReusablePaper>

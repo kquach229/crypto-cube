@@ -72,7 +72,7 @@ const ReusableHistoryChart: React.FC<ReusableHistoryChartProps> = ({
     setDisableIntervalSet(true);
     setTimeout(() => {
       setDisableIntervalSet(false);
-    }, 10000);
+    }, 30000);
   };
 
   if (isLoading) return <Loading />;
