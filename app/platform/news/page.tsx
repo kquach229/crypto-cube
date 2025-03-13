@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense, useState } from 'react';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ReusablePaper from '@/app/components/ReusablePaper';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';

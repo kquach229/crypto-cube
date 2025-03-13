@@ -23,7 +23,6 @@ import {
 } from '@/src/lib/utils';
 import SparklineChart from '@/app/components/SparklineChart';
 import Loading from '@/app/loading';
-import Link from 'next/link';
 import Error from '@/app/error';
 
 export const dynamic = 'force-dynamic';

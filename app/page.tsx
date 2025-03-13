@@ -1,7 +1,6 @@
 'use client';
 
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
-import { useTheme } from 'next-themes';
 
 export default function Home() {
   return (
