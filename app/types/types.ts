@@ -35,11 +35,6 @@ export interface MarketData {
   current_price: {
     usd: number;
   };
-  total_value_locked: number | null;
-  mcap_to_tvl_ratio: number | null;
-  fdv_to_tvl_ratio: number | null;
-  roi: number | null;
-  [key: string]: any;
 }
 
 export interface DeveloperData {
@@ -48,10 +43,6 @@ export interface DeveloperData {
   subscribers: number;
   total_issues: number;
   closed_issues: number;
-}
-
-export interface Ticker {
-  [key: string]: any; // Placeholder for the actual ticker data structure.
 }
 
 export interface Coin {
@@ -85,8 +76,6 @@ export interface Coin {
   public_notice: string | null;
   sentiment_votes_down_percentage: number;
   sentiment_votes_up_percentage: number;
-  status_updates: any[]; // You can define this more specifically based on the data you have
-  tickers: Ticker[];
   usd: number;
   watchlist_portfolio_users: number;
   web_slug: string;

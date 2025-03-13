@@ -76,6 +76,8 @@ const CoinDetailsSidebar: React.FC<CoinDetailsSidebarProps> = ({
     },
   } = allDetails;
 
+  console.log(allDetails);
+
   return (
     <div className={'w-full flex flex-col gap-5'}>
       <div className='text-lg text-center font-bold mb-5'>{name} Stats</div>
