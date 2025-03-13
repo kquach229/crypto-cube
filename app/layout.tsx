@@ -30,14 +30,13 @@ export default function RootLayout({
       <body className={`${poppins.className} antialiased min-h-screen`}>
         <QueryProvider>
           <SidebarProvider>
-            <MobileSideBar />
             <ThemeProvider
               attribute='class'
               defaultTheme='system'
               enableSystem
               disableTransitionOnChange>
               <div className='p-5 w-full'>
-                {' '}
+                <MobileSideBar />
                 <div className='block sm:hidden'>
                   <SidebarTrigger />
                 </div>
