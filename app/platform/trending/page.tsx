@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { ellipse } from '@/src/lib/utils';
 import Loading from '@/app/loading';
 import Error from '@/app/error';
+import Link from 'next/link';
 
 interface PriceChangePercentage24h {
   [currency: string]: number;
@@ -87,7 +88,7 @@ const TrendingPage: React.FC = () => {
   if (error) return <Error />;
 
   const { coins, nfts } = data || { coins: [], nfts: [] };
-
+  console.log(coins);
   return (
     <div className='min-h-screen'>
       <ReusablePaper>
@@ -97,36 +98,40 @@ const TrendingPage: React.FC = () => {
         <div>Trending Coins</div>
         <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
           {coins.map((coin) => (
-            <Card key={coin.item.coin_id} className={`relative h-[8rem]`}>
-              <CardContent className='p-5'>
-                <div className='flex items-center gap-10'>
-                  <div className='flex items-center w-full gap-5'>
-                    <Image
-                      className='rounded-full'
-                      width={50}
-                      height={150}
-                      style={{ objectFit: 'contain' }}
-                      src={coin.item.large}
-                      alt={coin.item.name}
-                    />
-                    <div className='flex-col flex'>
-                      <span className='font-semibold'>
-                        {ellipse(coin.item.name)}
-                      </span>
-                      <span className='text-sm'>{coin.item.symbol}</span>
+            <Link
+              key={coin.item.coin_id}
+              href={`/platform/market/${coin.item.id}`}>
+              <Card className={`relative h-[8rem]`}>
+                <CardContent className='p-5'>
+                  <div className='flex items-center gap-10'>
+                    <div className='flex items-center w-full gap-5'>
+                      <Image
+                        className='rounded-full'
+                        width={50}
+                        height={150}
+                        style={{ objectFit: 'contain' }}
+                        src={coin.item.large}
+                        alt={coin.item.name}
+                      />
+                      <div className='flex-col flex'>
+                        <span className='font-semibold'>
+                          {ellipse(coin.item.name)}
+                        </span>
+                        <span className='text-sm'>{coin.item.symbol}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <Image
+                        src={coin.item.data.sparkline}
+                        height={100}
+                        width={100}
+                        alt={coin.item.name}
+                      />
                     </div>
                   </div>
-                  <div>
-                    <Image
-                      src={coin.item.data.sparkline}
-                      height={100}
-                      width={100}
-                      alt={coin.item.name}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>
