@@ -2,7 +2,7 @@
 import ReusablePaper from '@/app/components/ReusablePaper';
 import Loading from '@/app/loading';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { use } from 'react';
 import CoinDetailsSidebar from './CoinDetailsSidebar';
 import CoinDetailsHeader from './CoinDetailsHeader';
 import ReusableHistoryChart from '@/app/components/ReusableHistoryChart';
@@ -78,31 +78,21 @@ const fetchCoinDetails = async (coinId: string): Promise<CoinDetails> => {
 
 const CoinPage: React.FC<CoinPageProps> = ({ params }) => {
   const { coinId } = params;
+
   const { data, isLoading, error } = useQuery<CoinDetails>({
     queryKey: ['fetchcoin', coinId],
     queryFn: () => fetchCoinDetails(coinId),
     staleTime: 60000,
   });
 
-  if (!data || isLoading)
-    return (
-      <div>
-        <Loading />
-      </div>
-    );
-  if (error)
-    return (
-      <div>
-        <Error />
-      </div>
-    );
+  if (!data || isLoading) return <Loading />;
+  if (error) return <Error />;
 
   return (
     <div>
       <ReusablePaper>
         <CoinDetailsHeader allDetails={data} />
       </ReusablePaper>
-
       <div className='grid grid-cols-12 w-full gap-5'>
         <div className='col-span-12 md:col-span-4'>
           <ReusablePaper
