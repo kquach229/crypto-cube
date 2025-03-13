@@ -90,7 +90,9 @@ const TrendingPage: React.FC = () => {
 
   return (
     <div className='min-h-screen'>
-      <ReusablePaper>Trending</ReusablePaper>
+      <ReusablePaper>
+        <div className='font-semibold'>Trending </div>
+      </ReusablePaper>
       <div className='p-5'>
         <div>Trending Coins</div>
         <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
