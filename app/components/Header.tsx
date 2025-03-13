@@ -9,7 +9,7 @@ const Header = () => {
       <div>
         <Link className='inline-flex items-center' href={'/'}>
           <Image
-            className='h-[50px] w-[50px] rounded-sm'
+            className='h-[50px] w-[50px] rounded-sm hidden sm:block'
             src={'/logo.png'}
             alt='crypto-cube-logo'
             height={50}
