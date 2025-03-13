@@ -1,4 +1,5 @@
 import { ModeToggle } from '@/components/ModeToggle';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -9,7 +10,7 @@ const Header = () => {
       <div>
         <Link className='inline-flex items-center' href={'/'}>
           <Image
-            className='h-[50px] w-[50px] rounded-sm hidden sm:block'
+            className='h-[50px] w-[50px] rounded-sm'
             src={'/logo.png'}
             alt='crypto-cube-logo'
             height={50}

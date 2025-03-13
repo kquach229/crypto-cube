@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import Header from './components/Header';
 import QueryProvider from '@/components/QueryProvider'; // Import new QueryProvider component
 import Script from 'next/script';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import MobileSideBar from './components/MobileSideBar';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -27,17 +29,25 @@ export default function RootLayout({
       </head>
       <body className={`${poppins.className} antialiased min-h-screen`}>
         <QueryProvider>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange>
-            <div className='p-5'>
-              {' '}
-              <Header />
-              {children}
-            </div>
-          </ThemeProvider>
+          <SidebarProvider>
+            <MobileSideBar />
+            <ThemeProvider
+              attribute='class'
+              defaultTheme='system'
+              enableSystem
+              disableTransitionOnChange>
+              <div className='p-5 w-full'>
+                {' '}
+                <div className='block sm:hidden'>
+                  <SidebarTrigger />
+                </div>
+                <div className='hidden sm:block'>
+                  <Header />
+                </div>
+                {children}
+              </div>
+            </ThemeProvider>
+          </SidebarProvider>
         </QueryProvider>
       </body>
     </html>
