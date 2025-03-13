@@ -1,5 +1,6 @@
 'use client';
 import ReusablePaper from '@/app/components/ReusablePaper';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import Loading from '@/app/loading';
 import { useQuery } from '@tanstack/react-query';
 import React, { use } from 'react';

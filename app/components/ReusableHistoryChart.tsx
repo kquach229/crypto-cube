@@ -7,6 +7,13 @@ import { Button } from '@/components/ui/button';
 import Error from '../error';
 import { ChartDataResponse, ReusableHistoryChartProps } from '../types/types';
 import { EChartsOption } from 'echarts';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { InfoIcon } from 'lucide-react';
 const INTERVALS = {
   '1D': 1,
   '1W': 7,
@@ -152,15 +159,18 @@ const ReusableHistoryChart: React.FC<ReusableHistoryChartProps> = ({
     toolbox: {
       feature: {
         saveAsImage: {},
+        dataView: {},
       },
       bottom: 2,
     },
     xAxis: {
-      type: 'time', // Change this to 'time' to indicate that you're working with time-based data
+      type: 'time',
+      splitNumber: 5, // Change this to 'time' to indicate that you're working with time-based data
       axisLabel: {
         formatter: getDateFormatter(selectedInterval),
         rich: { label: { color: '#666' } },
       },
+
       interval: Math.ceil((data || []).length / 6),
     },
 
@@ -169,7 +179,9 @@ const ReusableHistoryChart: React.FC<ReusableHistoryChartProps> = ({
       {
         data: limitedData,
         type: 'line',
-
+        showSymbol: true, // Ensure points are always visible
+        symbol: 'circle', // Shape of the data points
+        symbolSize: 6, // Size of the points
         areaStyle: {
           color: {
             type: 'linear',
@@ -190,7 +202,6 @@ const ReusableHistoryChart: React.FC<ReusableHistoryChartProps> = ({
         },
         itemStyle: { color: isPriceUp ? 'rgb(111,235,111)' : 'rgb(238,77,39)' },
         lineStyle: { width: 1.2 },
-        symbol: 'none',
       },
     ],
     grid: { left: 10, right: 10, top: 20, bottom: 40, containLabel: true },
@@ -199,6 +210,17 @@ const ReusableHistoryChart: React.FC<ReusableHistoryChartProps> = ({
   return (
     <div className='h-full w-full flex justify-center items-center flex-col'>
       <div className='flex justify-end w-full gap-2'>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <InfoIcon className='w-5 h-5' />
+            </TooltipTrigger>
+            <TooltipContent>
+              Due to API plan limitations, interval switching has been rate
+              limited to 30 seconds.
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         {Object.keys(INTERVALS).map((interval) => (
           <Button
             disabled={disableIntervalSet}
