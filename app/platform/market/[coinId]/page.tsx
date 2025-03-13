@@ -52,12 +52,6 @@ export type CoinDetails = {
   last_updated: string;
 };
 
-type CoinPageProps = {
-  params: {
-    coinId: string;
-  };
-};
-
 const fetchCoinDetails = async (coinId: string): Promise<CoinDetails> => {
   const coinDataResponse = await fetch(
     `https://api.coingecko.com/api/v3/coins/${coinId}`
@@ -76,7 +70,7 @@ const fetchCoinDetails = async (coinId: string): Promise<CoinDetails> => {
   };
 };
 
-const CoinPage: React.FC<CoinPageProps> = ({ params }) => {
+const CoinPage = ({ params }: { params: { coinId: string } }) => {
   const { coinId } = params;
 
   const { data, isLoading, error } = useQuery<CoinDetails>({
