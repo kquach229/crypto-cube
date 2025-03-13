@@ -9,14 +9,13 @@ import ReusableHistoryChart from '@/app/components/ReusableHistoryChart';
 import CoinDetailsFooter from './CoinDetailsFooter';
 import Error from '@/app/error';
 
-// Define the shape of the data returned from the fetchCoinDetails function
 export type CoinDetails = {
   id: string;
   name: string;
   symbol: string;
   asset_platform_id?: string;
   country_origin?: string;
-  description?: { en: string }; // Assuming it's an object with an 'en' property
+  description?: { en: string };
   detail_platforms?: Record<string, unknown>;
   categories: string[];
   block_time_in_minutes: number;
@@ -41,7 +40,6 @@ export type CoinDetails = {
   watchlist_portfolio_users: number;
   usd: number;
   market_cap_rank: number;
-  // Missing Fields
   developer_data?: Record<string, unknown>;
   hashing_algorithm?: string;
   image: {
@@ -63,10 +61,9 @@ const fetchCoinDetails = async (coinId: string): Promise<CoinDetails> => {
   const coinData = await coinDataResponse.json();
   const coinPriceData = await coinPriceResponse.json();
 
-  // Merge coin data with price data explicitly
   return {
     ...coinData,
-    usd: coinPriceData[coinId]?.usd || 0, // Ensure we get USD price or default to 0
+    usd: coinPriceData[coinId]?.usd || 0,
   };
 };
 
