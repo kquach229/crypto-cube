@@ -12,14 +12,16 @@ import Error from '@/app/error';
 interface SourceData {
   TYPE: string;
   ID: number;
-  SOURCE_KEY: string;
   NAME: string;
   IMAGE_URL: string;
-  [key: string]: any; // Allowing for additional properties in the future
+  SOURCE_KEY: string; // Allowing for additional properties in the future
 }
 
 interface CategoryData {
-  [key: string]: any; // Adjust type as needed based on the structure of individual category items
+  CATEGORY: string;
+  ID: number;
+  NAME: string;
+  TYPE: string; // Adjust type as needed based on the structure of individual category items
 }
 
 interface NewsItem {
@@ -61,6 +63,8 @@ const NewsPage = () => {
     queryFn: fetchNews,
     refetchInterval: 100000,
   });
+
+  console.log(data);
 
   if (isLoading) return <Loading />;
   if (error) return <Error />;
