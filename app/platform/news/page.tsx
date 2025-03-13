@@ -64,8 +64,6 @@ const NewsPage = () => {
     refetchInterval: 100000,
   });
 
-  console.log(data);
-
   if (isLoading) return <Loading />;
   if (error) return <Error />;
 
@@ -90,7 +88,7 @@ const NewsPage = () => {
             return (
               <Card key={news.ID}>
                 <CardContent>
-                  <div className='h-[200]'>
+                  <div>
                     <Image
                       className='rounded-sm'
                       src={news.IMAGE_URL}
