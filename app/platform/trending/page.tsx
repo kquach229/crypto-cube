@@ -88,7 +88,7 @@ const TrendingPage: React.FC = () => {
   if (error) return <Error />;
 
   const { coins, nfts } = data || { coins: [], nfts: [] };
-  console.log(coins);
+  console.log(nfts);
   return (
     <div className='min-h-screen'>
       <ReusablePaper>
@@ -140,34 +140,38 @@ const TrendingPage: React.FC = () => {
         <div>Trending NFTs</div>
         <div className='mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'>
           {nfts.map((nft) => (
-            <Card key={nft.id} className={`relative h-[8rem]`}>
-              <CardContent className='p-5'>
-                <div className='flex items-center gap-10'>
-                  <div className='flex items-center w-full gap-5'>
-                    <Image
-                      className='rounded-full'
-                      width={50}
-                      height={150}
-                      style={{ objectFit: 'contain' }}
-                      src={nft.thumb}
-                      alt={nft.name}
-                    />
-                    <div className='flex-col flex'>
-                      <span className='font-semibold'>{ellipse(nft.name)}</span>
-                      <span className='text-sm'>{nft.symbol}</span>
+            <Link key={nft.id} href={`/platform/nfts/${nft.id}`}>
+              <Card key={nft.id} className={`relative h-[8rem]`}>
+                <CardContent className='p-5'>
+                  <div className='flex items-center gap-10'>
+                    <div className='flex items-center w-full gap-5'>
+                      <Image
+                        className='rounded-full'
+                        width={50}
+                        height={150}
+                        style={{ objectFit: 'contain' }}
+                        src={nft.thumb}
+                        alt={nft.name}
+                      />
+                      <div className='flex-col flex'>
+                        <span className='font-semibold'>
+                          {ellipse(nft.name)}
+                        </span>
+                        <span className='text-sm'>{nft.symbol}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <Image
+                        src={nft.data.sparkline}
+                        height={100}
+                        width={100}
+                        alt={nft.name}
+                      />
                     </div>
                   </div>
-                  <div>
-                    <Image
-                      src={nft.data.sparkline}
-                      height={100}
-                      width={100}
-                      alt={nft.name}
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>

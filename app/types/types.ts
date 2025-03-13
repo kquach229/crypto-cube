@@ -80,3 +80,82 @@ export interface Coin {
   watchlist_portfolio_users: number;
   web_slug: string;
 }
+
+export interface INFTDetailsProps {
+  id: string;
+  contract_address: string;
+  asset_platform_id: string;
+  name: string;
+  symbol: string;
+  image: {
+    small: string;
+    small_2x: string;
+  };
+  banner_image: string;
+  description: string;
+  native_currency: string;
+  native_currency_symbol: string;
+  market_cap_rank: number;
+  floor_price: {
+    native_currency: number;
+    usd: number;
+  };
+  market_cap: {
+    native_currency: number;
+    usd: number;
+  };
+  volume_24h: {
+    native_currency: number;
+    usd: number;
+  };
+  floor_price_in_usd_24h_percentage_change: number;
+  floor_price_24h_percentage_change: {
+    usd: number;
+    native_currency: number;
+  };
+  market_cap_24h_percentage_change: {
+    usd: number;
+    native_currency: number;
+  };
+  volume_24h_percentage_change: {
+    usd: number;
+    native_currency: number;
+  };
+  total_supply: number;
+  floor_price_7d_percentage_change: {
+    usd: number;
+    native_currency: number;
+  };
+  floor_price_14d_percentage_change: {
+    usd: number;
+    native_currency: number;
+  };
+  floor_price_30d_percentage_change: {
+    usd: number;
+    native_currency: number;
+  };
+  floor_price_60d_percentage_change: {
+    usd: number;
+    native_currency: number;
+  };
+  floor_price_1y_percentage_change: {
+    usd: number;
+    native_currency: number;
+  };
+
+  explorers: Explorer[];
+  user_favorites_count: number;
+  ath: {
+    native_currency: number;
+    usd: number;
+  };
+  ath_date: {
+    native_currency: string;
+    usd: string;
+  };
+}
+
+type Explorer = {
+  name: string;
+  link: string;
+};

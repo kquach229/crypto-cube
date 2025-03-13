@@ -1,4 +1,5 @@
 import {
+  formatPrice,
   friendlyFormatter,
   getHostName,
   percentageFormatter,
@@ -14,71 +15,29 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ArrowDownIcon } from 'lucide-react';
 
-// Type definitions for nested objects
-interface MarketData {
-  total_supply: number;
-  circulating_supply: number;
-  price_change_percentage_24h: number;
-  price_change_percentage_1y: number;
-  price_change_percentage_7d: number;
-  price_change_percentage_14d: number;
-  price_change_percentage_30d: number;
-}
-
-interface Links {
-  homepage: string[];
-  blockchain_site: string[];
-}
-
-interface CommunityData {
-  twitter_followers: number;
-}
-
-interface CoinDetails {
-  name: string;
-  categories: string[];
-  block_time_in_minutes: number;
-  genesis_date: string | null;
-  links: Links;
-  market_data: MarketData;
-  symbol: string;
-  watchlist_portfolio_users: number;
-  usd: number;
-  market_cap_rank: number;
-  community_data: CommunityData;
-}
-
-// Define the props type for the component
-interface CoinDetailsSidebarProps {
-  allDetails: CoinDetails;
-}
-
-const CoinDetailsSidebar: React.FC<CoinDetailsSidebarProps> = ({
-  allDetails,
-}) => {
+const NftDetailsSidebar = ({ data }) => {
   const {
     name,
-
-    block_time_in_minutes,
-    genesis_date,
-    links,
-    market_data,
     symbol,
-    watchlist_portfolio_users,
+    total_supply,
     market_cap_rank,
-    community_data,
-    market_data: {
-      price_change_percentage_24h,
-      price_change_percentage_1y,
-      price_change_percentage_7d,
-      price_change_percentage_14d,
-      price_change_percentage_30d,
-    },
-  } = allDetails;
-
+    floor_price_24h_percentage_change,
+    floor_price_7d_percentage_change,
+    floor_price_14d_percentage_change,
+    floor_price_30d_percentage_change,
+    floor_price_1y_percentage_change,
+    links,
+    explorers,
+    volume_24h_percentage_change,
+    market_cap,
+    user_favorites_count,
+    number_of_unique_addresses,
+    ath,
+    ath_date,
+  } = data;
   return (
     <div className={'w-full flex flex-col gap-5'}>
-      <div className='text-lg text-center font-bold mb-5'>{name} Stats</div>
+      {/* <div className='text-lg text-center font-bold mb-5'>{name} Stats</div> */}
       <div className='flex justify-between flex-col w-full'>
         <h1 className='font-semibold mb-5'>Key Metrics</h1>
         <div className='flex justify-between'>
@@ -87,73 +46,94 @@ const CoinDetailsSidebar: React.FC<CoinDetailsSidebarProps> = ({
         </div>
 
         <div className='flex justify-between'>
-          <span>Market Total Supply</span>
-          <span>{friendlyFormatter.format(market_data.total_supply)}</span>
+          <span>Market Cap</span>
+          <span>{friendlyFormatter.format(market_cap.usd)}</span>
         </div>
 
         <div className='flex justify-between'>
-          <span>Circulating Supply</span>
+          <span>Market Total Supply</span>
+          <span>{friendlyFormatter.format(total_supply)}</span>
+        </div>
+
+        <div className='flex justify-between'>
+          <span>All Time High</span>
+          <span>{formatPrice('USD', ath.usd)}</span>
+        </div>
+
+        <div className='flex justify-between'>
+          <span>All Time High Date</span>
           <span>
-            {friendlyFormatter.format(market_data.circulating_supply)}
+            {ath_date.usd && new Date(ath_date.usd).toLocaleDateString()}
           </span>
         </div>
       </div>
 
       <div>
         <div className='flex justify-between'>
-          <span>Price Change 24h</span>
+          <span>Floor Price Change 24h</span>
           <span
             className={
-              price_change_percentage_24h >= 0
+              floor_price_24h_percentage_change.usd >= 0
                 ? 'text-green-500'
                 : 'text-red-500'
             }>
-            {percentageFormatter(price_change_percentage_24h)}
+            {percentageFormatter(floor_price_24h_percentage_change.usd)}
           </span>
         </div>
 
         <div className='flex justify-between'>
-          <span>Price Change 7D</span>
+          <span>Floor Price Change 7D</span>
           <span
             className={
-              price_change_percentage_7d >= 0
+              floor_price_7d_percentage_change.usd >= 0
                 ? 'text-green-500'
                 : 'text-red-500'
             }>
-            {percentageFormatter(price_change_percentage_7d)}
+            {percentageFormatter(floor_price_7d_percentage_change.usd)}
           </span>
         </div>
         <div className='flex justify-between'>
-          <span>Price Change 14D</span>
+          <span>Floor Price Change 14D</span>
           <span
             className={
-              price_change_percentage_14d >= 0
+              floor_price_14d_percentage_change.usd >= 0
                 ? 'text-green-500'
                 : 'text-red-500'
             }>
-            {percentageFormatter(price_change_percentage_14d)}
+            {percentageFormatter(floor_price_14d_percentage_change.usd)}
           </span>
         </div>
         <div className='flex justify-between'>
-          <span>Price Change 30D</span>
+          <span>Floor Price Change 30D</span>
           <span
             className={
-              price_change_percentage_30d >= 0
+              floor_price_30d_percentage_change.usd >= 0
                 ? 'text-green-500'
                 : 'text-red-500'
             }>
-            {percentageFormatter(price_change_percentage_30d)}
+            {percentageFormatter(floor_price_30d_percentage_change.usd)}
           </span>
         </div>
         <div className='flex justify-between'>
-          <span>Price Change 1Y</span>
+          <span>Floor Price Change 1Y</span>
           <span
             className={
-              price_change_percentage_1y >= 0
+              floor_price_1y_percentage_change.usd >= 0
                 ? 'text-green-500'
                 : 'text-red-500'
             }>
-            {percentageFormatter(price_change_percentage_1y)}
+            {percentageFormatter(floor_price_1y_percentage_change.usd)}
+          </span>
+        </div>
+        <div className='flex justify-between'>
+          <span>Volume 24h Change</span>
+          <span
+            className={
+              volume_24h_percentage_change.usd >= 0
+                ? 'text-green-500'
+                : 'text-red-500'
+            }>
+            {percentageFormatter(volume_24h_percentage_change.usd)}
           </span>
         </div>
       </div>
@@ -168,41 +148,46 @@ const CoinDetailsSidebar: React.FC<CoinDetailsSidebarProps> = ({
           <span>Symbol</span>
           <span>{symbol.toUpperCase()}</span>
         </div>
+
         <div className='flex justify-between'>
-          <span>Homepage</span>
+          <span>Links</span>
           <DropdownMenu>
             <DropdownMenuTrigger className='flex text-center gap-2'>
               <span className='text-sm'>Sites</span>
               <ArrowDownIcon size={12} className='mt-1' />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {links.homepage.map((site) => (
+              {Object.keys(links).map((link) => (
                 <Link
                   className='cursor-pointer'
-                  href={site}
+                  href={links[link]}
                   target='__blank'
-                  key={site}>
-                  <DropdownMenuItem>{getHostName(site)}</DropdownMenuItem>
+                  key={link}>
+                  <DropdownMenuItem>
+                    {getHostName(links[link])}
+                  </DropdownMenuItem>
                 </Link>
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
         <div className='flex justify-between'>
-          <span>Blockchain Sites</span>
+          <span>Explorers</span>
           <DropdownMenu>
             <DropdownMenuTrigger className='flex text-center gap-2'>
-              <span className='text-sm'>Sites</span>
+              <span className='text-sm'>Explorers</span>
               <ArrowDownIcon size={12} className='mt-1' />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {links.blockchain_site.map((site) => (
+              {explorers.map((explorer) => (
                 <Link
                   className='cursor-pointer'
-                  href={site}
+                  href={explorer.name}
                   target='__blank'
-                  key={site}>
-                  <DropdownMenuItem>{getHostName(site)}</DropdownMenuItem>
+                  key={explorer.name}>
+                  <DropdownMenuItem>
+                    {getHostName(explorer.name)}
+                  </DropdownMenuItem>
                 </Link>
               ))}
             </DropdownMenuContent>
@@ -210,18 +195,15 @@ const CoinDetailsSidebar: React.FC<CoinDetailsSidebarProps> = ({
         </div>
 
         <div className='flex justify-between'>
-          <span>Twitter Followers</span>
-          <span>
-            {friendlyFormatter.format(community_data.twitter_followers)}
-          </span>
+          <span>Favorites Count</span>
+          <span>{friendlyFormatter.format(user_favorites_count)}</span>
+        </div>
+        <div className='flex justify-between'>
+          <span>Unique Address Count</span>
+          <span>{friendlyFormatter.format(number_of_unique_addresses)}</span>
         </div>
 
-        <div className='flex justify-between'>
-          <span>Watchlist Portfolio</span>
-          <span>{friendlyFormatter.format(watchlist_portfolio_users)}</span>
-        </div>
-
-        <div className='flex justify-between'>
+        {/* <div className='flex justify-between'>
           <span>Block Time</span>
           <span>
             {block_time_in_minutes}{' '}
@@ -231,10 +213,10 @@ const CoinDetailsSidebar: React.FC<CoinDetailsSidebarProps> = ({
         <div className='flex justify-between'>
           <span>Genesis Date</span>
           <span>{genesis_date || 'N/A'}</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
 };
 
-export default CoinDetailsSidebar;
+export default NftDetailsSidebar;
