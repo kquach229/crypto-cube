@@ -36,6 +36,9 @@ export default function MobileSideBar() {
             <Link onClick={toggleSidebar} href={'/platform/market'}>
               Market
             </Link>
+            <Link onClick={toggleSidebar} href={'/platform/nfts'}>
+              Nfts
+            </Link>
             <Link onClick={toggleSidebar} href={'/platform/trending'}>
               Trending
             </Link>
