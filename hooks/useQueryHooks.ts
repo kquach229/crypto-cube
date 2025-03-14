@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { INFTDetailsProps } from '@/app/types/types';
 
+// Get NFT Details
 const fetchNftDetails = async (nftId: string): Promise<INFTDetailsProps> => {
   const response = await fetch(
     `https://api.coingecko.com/api/v3/nfts/${nftId}`

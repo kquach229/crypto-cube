@@ -3,7 +3,6 @@ import { ellipse } from '@/src/lib/utils';
 import React from 'react';
 
 const NftGeneralSection = ({ data }: { data: INFTDetailsProps }) => {
-  console.log(data);
   return (
     <div
       style={{

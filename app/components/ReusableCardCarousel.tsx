@@ -34,7 +34,6 @@ const ReusableCardCarousel: React.FC<ReusableCardCarouselProps> = ({
   isNft,
   styles,
 }) => {
-  console.log(data);
   return (
     <Carousel style={styles} className='w-full max-w-lg mx-auto'>
       <div className='pt-5 pb-2'>

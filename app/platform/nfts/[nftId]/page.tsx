@@ -8,7 +8,6 @@ import NftDetailsSidebar from './NftDetailsSidebar';
 import NftDetailsFooter from './NftDetailsFooter';
 import NftGeneralSection from './NftGeneralSection';
 import { useNftDetails } from '@/hooks/useQueryHooks';
-import { useParams } from 'next/navigation';
 import { use } from 'react';
 
 const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {

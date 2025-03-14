@@ -31,8 +31,6 @@ const getChartData = async ({
   const [, coinId, interval] = queryKey;
   const days = INTERVALS[interval as keyof typeof INTERVALS];
 
-  console.log(days);
-
   if (!days) {
     console.error(`Invalid interval: ${interval}`);
     return [];

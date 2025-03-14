@@ -88,7 +88,7 @@ const TrendingPage: React.FC = () => {
   if (error) return <Error />;
 
   const { coins, nfts } = data || { coins: [], nfts: [] };
-  console.log(nfts);
+
   return (
     <div className='min-h-screen'>
       <ReusablePaper>

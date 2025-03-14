@@ -163,3 +163,11 @@ export type Explorer = {
   name: string;
   link: string;
 };
+
+export type NftListItem = {
+  asset_platform_id: string;
+  contract_address: string;
+  id: string;
+  name: string;
+  symbol: string;
+};
