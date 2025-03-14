@@ -8,6 +8,8 @@ import Error from '@/app/error';
 import NftDetailsHeader from './NftDetailsHeader';
 import { INFTDetailsProps } from '@/app/types/types';
 import NftDetailsSidebar from './NftDetailsSidebar';
+import NftDetailsFooter from './NftDetailsFooter';
+import Image from 'next/image';
 
 const fetchNftDetails = async (nftId: string): Promise<INFTDetailsProps> => {
   const response = await fetch(
@@ -49,18 +51,25 @@ const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {
               marginTop: 15,
               height: '600px',
               padding: '20px',
-              display: 'flex',
-              alignItems: 'center',
+              position: 'relative', // Needed for Image absolute positioning
               width: '100%',
             }}>
-            <ReusableHistoryChart coinId={nftId} />
+            <div className='absolute inset-0'>
+              <Image
+                layout='fill' // Makes it stretch across the whole container
+                objectFit='cover' // Ensures it covers the space
+                objectPosition='center' // Centers the image
+                src={data.banner_image}
+                alt={data.name}
+              />
+            </div>
           </ReusablePaper>
         </div>
-        {/* <div className='col-span-12'>
+        <div className='col-span-12'>
           <ReusablePaper>
-            <CoinDetailsFooter allDetails={data} />
+            <NftDetailsFooter data={data} />
           </ReusablePaper>
-        </div> */}
+        </div>
       </div>
     </div>
   );

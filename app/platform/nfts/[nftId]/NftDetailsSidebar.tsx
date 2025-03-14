@@ -14,8 +14,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ArrowDownIcon } from 'lucide-react';
+import { Explorer, INFTDetailsProps } from '@/app/types/types';
 
-const NftDetailsSidebar = ({ data }) => {
+const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
   const {
     name,
     symbol,
@@ -179,7 +180,7 @@ const NftDetailsSidebar = ({ data }) => {
               <ArrowDownIcon size={12} className='mt-1' />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {explorers.map((explorer) => (
+              {explorers.map((explorer: Explorer) => (
                 <Link
                   className='cursor-pointer'
                   href={explorer.name}

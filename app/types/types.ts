@@ -153,9 +153,13 @@ export interface INFTDetailsProps {
     native_currency: string;
     usd: string;
   };
+  links: {
+    [key: string]: string;
+  };
+  number_of_unique_addresses: number;
 }
 
-type Explorer = {
+export type Explorer = {
   name: string;
   link: string;
 };
