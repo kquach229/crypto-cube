@@ -8,7 +8,6 @@ import NftDetailsHeader from './NftDetailsHeader';
 import { INFTDetailsProps } from '@/app/types/types';
 import NftDetailsSidebar from './NftDetailsSidebar';
 import NftDetailsFooter from './NftDetailsFooter';
-import SparklineChart from '@/app/components/SparklineChart';
 import NftGeneralSection from './NftGeneralSection';
 
 const fetchNftDetails = async (nftId: string): Promise<INFTDetailsProps> => {
@@ -30,8 +29,6 @@ const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {
 
   if (!data || isLoading) return <Loading />;
   if (error) return <Error />;
-
-  console.log('nft data', data);
 
   return (
     <div>
