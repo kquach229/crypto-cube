@@ -2,8 +2,7 @@
 import ReusablePaper from '@/app/components/ReusablePaper';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useDebouncedCallback } from 'use-debounce';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Table,
   TableBody,
@@ -29,9 +28,8 @@ const fetchNfts = async () => {
 };
 
 const NftsPage = () => {
-  const { push, replace } = useRouter();
+  const { push } = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const { data, isLoading, error } = useQuery({
     queryKey: ['getnfts'],
     queryFn: fetchNfts,
