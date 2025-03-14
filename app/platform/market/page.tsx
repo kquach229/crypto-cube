@@ -14,7 +14,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import Image from 'next/image';
-import { Search } from 'lucide-react';
 import {
   ellipse,
   formatPrice,
@@ -24,6 +23,7 @@ import {
 import SparklineChart from '@/app/components/SparklineChart';
 import Loading from '@/app/loading';
 import Error from '@/app/error';
+import ReusableSearch from '@/app/components/ReusableSearch';
 
 export const dynamic = 'force-dynamic';
 
@@ -89,8 +89,6 @@ const MarketPage = () => {
     refetchInterval: 60000,
   });
 
-  console.log(coinsData);
-
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace, push } = useRouter();
@@ -127,14 +125,7 @@ const MarketPage = () => {
           <div className='font-semibold'>Market Overview</div>
         </div>
         <div className='relative flex items-center'>
-          <Search className='absolute left-2.5 h-4 w-4 text-primary' />
-          <input
-            onChange={(e) => handleSearch(e.target.value)}
-            type='search'
-            placeholder='Search for a coin'
-            className='pl-8 border-none shadow-none w-[300px]'
-            defaultValue={searchParams.get('query')?.toString()}
-          />
+          <ReusableSearch placeholder='Search for a Coin' />
         </div>
       </ReusablePaper>
       <ReusablePaper>

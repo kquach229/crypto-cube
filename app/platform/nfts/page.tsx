@@ -2,7 +2,8 @@
 import ReusablePaper from '@/app/components/ReusablePaper';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useDebouncedCallback } from 'use-debounce';
 import {
   Table,
   TableBody,
@@ -16,6 +17,7 @@ import { Search } from 'lucide-react';
 import Loading from '@/app/loading';
 import Error from '@/app/error';
 import { NftListItem } from '@/app/types/types';
+import ReusableSearch from '@/app/components/ReusableSearch';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,7 +30,9 @@ const fetchNfts = async () => {
 };
 
 const NftsPage = () => {
-  const { push } = useRouter();
+  const { push, replace } = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const { data, isLoading, error } = useQuery({
     queryKey: ['getnfts'],
     queryFn: fetchNfts,
@@ -37,6 +41,18 @@ const NftsPage = () => {
   const handleClickCoinRow = (nftId: string) => {
     push(`/platform/nfts/${nftId}`);
   };
+
+  const handleSearch = useDebouncedCallback((searchTerm: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (searchTerm) {
+      params.set('query', searchTerm);
+    } else {
+      params.delete('query');
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }, 300);
+
+  const searchQuery = searchParams.get('query')?.toLocaleLowerCase() || '';
 
   if (isLoading) return <Loading />;
   if (error) return <Error />;
@@ -51,16 +67,7 @@ const NftsPage = () => {
         <div>
           <div className='font-semibold'>NFTs Overview</div>
         </div>
-        <div className='relative flex items-center'>
-          <Search className='absolute left-2.5 h-4 w-4 text-primary' />
-          <input
-            // onChange={(e) => handleSearch(e.target.value)}
-            type='search'
-            placeholder='Search for a coin'
-            className='pl-8 border-none shadow-none w-[300px]'
-            // defaultValue={searchParams.get('query')?.toString()}
-          />
-        </div>
+        <ReusableSearch placeholder='Search for an NFT' />
       </ReusablePaper>
       <ReusablePaper>
         <div>
@@ -79,19 +86,25 @@ const NftsPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.map((nft: NftListItem) => (
-                <TableRow
-                  key={nft.id}
-                  onClick={() => handleClickCoinRow(nft.id)}
-                  className='w-full cursor-pointer h-[100]'>
-                  <TableCell>{nft.name || 'N/A'}</TableCell>
-                  <TableCell>
-                    {nft.asset_platform_id.toUpperCase() || 'N/A'}
-                  </TableCell>
-                  <TableCell>{nft.symbol || 'N/A'}</TableCell>
-                  <TableCell>{nft.contract_address || 'N/A'}</TableCell>
-                </TableRow>
-              ))}
+              {data
+                .filter(
+                  (item: NftListItem) =>
+                    item.name.toLowerCase().includes(searchQuery) ||
+                    item.symbol.toLowerCase().includes(searchQuery)
+                )
+                .map((nft: NftListItem) => (
+                  <TableRow
+                    key={nft.id}
+                    onClick={() => handleClickCoinRow(nft.id)}
+                    className='w-full cursor-pointer h-[100]'>
+                    <TableCell>{nft.name || 'N/A'}</TableCell>
+                    <TableCell>
+                      {nft.asset_platform_id.toUpperCase() || 'N/A'}
+                    </TableCell>
+                    <TableCell>{nft.symbol || 'N/A'}</TableCell>
+                    <TableCell>{nft.contract_address || 'N/A'}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </div>
