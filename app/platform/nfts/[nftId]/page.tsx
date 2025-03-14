@@ -1,34 +1,21 @@
 'use client';
+
 import ReusablePaper from '@/app/components/ReusablePaper';
 import Loading from '@/app/loading';
-import { useQuery } from '@tanstack/react-query';
-import React, { use } from 'react';
 import Error from '@/app/error';
 import NftDetailsHeader from './NftDetailsHeader';
-import { INFTDetailsProps } from '@/app/types/types';
 import NftDetailsSidebar from './NftDetailsSidebar';
 import NftDetailsFooter from './NftDetailsFooter';
 import NftGeneralSection from './NftGeneralSection';
+import { useNftDetails } from '@/hooks/useQueryHooks';
+import { useParams } from 'next/navigation';
 
-const fetchNftDetails = async (nftId: string): Promise<INFTDetailsProps> => {
-  const response = await fetch(
-    `https://api.coingecko.com/api/v3/nfts/${nftId}`
-  );
-  const data = await response.json();
-  return data;
-};
+const NftPage = () => {
+  const { nftId } = useParams(); // Use `useParams()` to get the NFT ID from the URL
+  const { data, error, isLoading } = useNftDetails(nftId as string);
 
-const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {
-  const { nftId } = use(params);
-
-  const { data, isLoading, error } = useQuery<INFTDetailsProps>({
-    queryKey: ['fetchnft', nftId],
-    queryFn: () => fetchNftDetails(nftId),
-    staleTime: 60000,
-  });
-
-  if (!data || isLoading) return <Loading />;
-  if (error) return <Error />;
+  if (isLoading) return <Loading />;
+  if (error || !data) return <Error />;
 
   return (
     <div>
@@ -48,7 +35,7 @@ const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {
               marginTop: 15,
               height: '600px',
               padding: '20px',
-              position: 'relative', // Needed for Image absolute positioning
+              position: 'relative',
               width: '100%',
             }}>
             <NftGeneralSection data={data} />

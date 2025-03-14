@@ -1,4 +1,5 @@
 import { INFTDetailsProps } from '@/app/types/types';
+import { ellipse } from '@/src/lib/utils';
 import React from 'react';
 
 const NftGeneralSection = ({ data }: { data: INFTDetailsProps }) => {
@@ -23,8 +24,8 @@ const NftGeneralSection = ({ data }: { data: INFTDetailsProps }) => {
           height: '100%',
           backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the opacity here
         }}></div>
-      <h1 className='opacity-50 bg-paper relative text-7xl font-bold text-center text-nowrap'>
-        {data.name}
+      <h1 className='opacity-50 bg-paper relative text-2xl md:text-4xl font-bold text-center text-nowrap'>
+        {ellipse(data.name, 18)}
       </h1>
     </div>
   );

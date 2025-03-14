@@ -20,6 +20,7 @@ const Header = () => {
       </div>
       <div className='relative flex gap-5 items-center'>
         <Link href={'/platform/market'}>Market</Link>
+        <Link href={'/platform/nfts'}>Nfts</Link>
         <Link href={'/platform/trending'}>Trending</Link>
         <Link href={'/platform/news'}>News</Link>
         <ModeToggle />
