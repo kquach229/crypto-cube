@@ -178,7 +178,7 @@ export default function Sidebar({
     );
   }
 
-  if (isMobile) {
+  if (isMobile && openMobile) {
     return (
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
