@@ -3,13 +3,13 @@ import ReusablePaper from '@/app/components/ReusablePaper';
 import Loading from '@/app/loading';
 import { useQuery } from '@tanstack/react-query';
 import React, { use } from 'react';
-import ReusableHistoryChart from '@/app/components/ReusableHistoryChart';
 import Error from '@/app/error';
 import NftDetailsHeader from './NftDetailsHeader';
 import { INFTDetailsProps } from '@/app/types/types';
 import NftDetailsSidebar from './NftDetailsSidebar';
 import NftDetailsFooter from './NftDetailsFooter';
-import Image from 'next/image';
+import SparklineChart from '@/app/components/SparklineChart';
+import NftGeneralSection from './NftGeneralSection';
 
 const fetchNftDetails = async (nftId: string): Promise<INFTDetailsProps> => {
   const response = await fetch(
@@ -54,15 +54,7 @@ const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {
               position: 'relative', // Needed for Image absolute positioning
               width: '100%',
             }}>
-            {/* <div className='absolute inset-0'>
-              <Image
-                layout='fill' // Makes it stretch across the whole container
-                objectFit='cover' // Ensures it covers the space
-                objectPosition='center' // Centers the image
-                src={data.banner_image}
-                alt={data.name}
-              />
-            </div> */}
+            <NftGeneralSection data={data} />
           </ReusablePaper>
         </div>
         <div className='col-span-12'>
