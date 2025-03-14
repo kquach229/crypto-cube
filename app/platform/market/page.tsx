@@ -2,8 +2,7 @@
 import ReusablePaper from '@/app/components/ReusablePaper';
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
-import { useDebouncedCallback } from 'use-debounce';
+import { useSearchParams, useRouter } from 'next/navigation';
 import {
   Table,
   TableBody,

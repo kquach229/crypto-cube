@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Search } from 'lucide-react';
 import Loading from '@/app/loading';
 import Error from '@/app/error';
 import { NftListItem } from '@/app/types/types';
@@ -41,16 +40,6 @@ const NftsPage = () => {
   const handleClickCoinRow = (nftId: string) => {
     push(`/platform/nfts/${nftId}`);
   };
-
-  const handleSearch = useDebouncedCallback((searchTerm: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (searchTerm) {
-      params.set('query', searchTerm);
-    } else {
-      params.delete('query');
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }, 300);
 
   const searchQuery = searchParams.get('query')?.toLocaleLowerCase() || '';
 
