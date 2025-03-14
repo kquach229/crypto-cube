@@ -9,9 +9,10 @@ import NftDetailsFooter from './NftDetailsFooter';
 import NftGeneralSection from './NftGeneralSection';
 import { useNftDetails } from '@/hooks/useQueryHooks';
 import { useParams } from 'next/navigation';
+import { use } from 'react';
 
-const NftPage = () => {
-  const { nftId } = useParams(); // Use `useParams()` to get the NFT ID from the URL
+const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {
+  const { nftId } = use(params);
   const { data, error, isLoading } = useNftDetails(nftId as string);
 
   if (isLoading) return <Loading />;
