@@ -54,7 +54,7 @@ const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {
               position: 'relative', // Needed for Image absolute positioning
               width: '100%',
             }}>
-            <div className='absolute inset-0'>
+            {/* <div className='absolute inset-0'>
               <Image
                 layout='fill' // Makes it stretch across the whole container
                 objectFit='cover' // Ensures it covers the space
@@ -62,7 +62,7 @@ const NftPage = ({ params }: { params: Promise<{ nftId: string }> }) => {
                 src={data.banner_image}
                 alt={data.name}
               />
-            </div>
+            </div> */}
           </ReusablePaper>
         </div>
         <div className='col-span-12'>
