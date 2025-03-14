@@ -8,6 +8,8 @@ import { ellipse } from '@/src/lib/utils';
 import Link from 'next/link';
 import Loading from '@/app/loading';
 import Error from '@/app/error';
+import ReusableSearch from '@/app/components/ReusableSearch';
+import { useSearchParams } from 'next/navigation';
 
 interface SourceData {
   TYPE: string;
@@ -64,6 +66,9 @@ const NewsPage = () => {
     refetchInterval: 100000,
   });
 
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('query')?.toLowerCase() || '';
+
   if (isLoading) return <Loading />;
   if (error) return <Error />;
 
@@ -74,13 +79,21 @@ const NewsPage = () => {
           width: '100%',
           display: 'flex',
           justifyContent: 'space-between',
+          alignItems: 'center',
         }}>
-        <div className='font-semibold'>Crypto News</div>
-        <div>{new Date().toDateString()}</div>
+        <div>
+          <div className='font-semibold'>Crypto News</div>
+          <div>{new Date().toDateString()}</div>
+        </div>
+        <div>
+          <ReusableSearch placeholder='Search News' />
+        </div>
       </ReusablePaper>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5'>
         {data &&
-          data.Data.map((news: NewsItem) => {
+          data.Data.filter((item: NewsItem) =>
+            item.TITLE.toLowerCase().includes(searchQuery)
+          ).map((news: NewsItem) => {
             const publishedDate = new Date(
               news.PUBLISHED_ON * 1000
             ).toLocaleDateString('en-US');

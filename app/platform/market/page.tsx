@@ -90,19 +90,7 @@ const MarketPage = () => {
   });
 
   const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace, push } = useRouter();
-
-  const handleSearch = useDebouncedCallback((searchTerm: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (searchTerm) {
-      params.set('query', searchTerm);
-    } else {
-      params.delete('query');
-    }
-
-    replace(`${pathname}?${params.toString()}`);
-  }, 300);
+  const { push } = useRouter();
 
   if (isLoading) return <Loading />;
   if (error) return <Error />;
