@@ -5,10 +5,13 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 export default function Home() {
   return (
     <div className='relative h-100 mx-auto w-full text-center flex flex-col justify-center'>
-      <h1 className='text-[2rem] sm:text-[5rem]'>
-        Stay Ahead With <span className='font-extrabold'>CryptoCube </span>
+      <span className='mx-auto text-[2rem] sm:text-[5rem]'>
+        <h1 className='max-w-[80%] md:max-w-full mx-auto'>
+          Stay Ahead With <span className='font-extrabold'>CryptoCube </span>
+        </h1>
+
         <DotLottieReact
-          className='absolute top-[25rem] md:top-[5rem] md:right-[0rem]'
+          className='absolute top-[15rem] md:top-[5rem] md:right-[0rem]'
           src='/cube-lottie'
           loop
           autoplay
@@ -16,7 +19,7 @@ export default function Home() {
           height={300}
           draggable
         />
-      </h1>
+      </span>
 
       <p className='text-xs sm:text-sm mt-5'>
         Track Trends in Crypto and NFTs to make informed decisions

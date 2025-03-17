@@ -23,6 +23,7 @@ const Header = () => {
         <Link href={'/platform/nfts'}>Nfts</Link>
         <Link href={'/platform/trending'}>Trending</Link>
         <Link href={'/platform/news'}>News</Link>
+        <Link href={'/platform/watchlist'}>Watchlist</Link>
         <ModeToggle />
       </div>
     </nav>

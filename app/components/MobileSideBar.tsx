@@ -45,6 +45,9 @@ export default function MobileSideBar() {
             <Link onClick={toggleSidebar} href={'/platform/news'}>
               News
             </Link>
+            <Link onClick={toggleSidebar} href={'/platform/watchlist'}>
+              Watchlist
+            </Link>
           </div>
         </SidebarGroup>
         <SidebarGroup />
