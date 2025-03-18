@@ -45,42 +45,6 @@ export interface DeveloperData {
   closed_issues: number;
 }
 
-export interface Coin {
-  id: string;
-  symbol: string;
-  name: string;
-  asset_platform_id: string | null;
-  block_time_in_minutes: number;
-  categories: string[];
-  community_data: CommunityData;
-  country_origin: string;
-  description: Localization;
-  detail_platforms: Record<string, object>;
-  developer_data: DeveloperData;
-  genesis_date: string;
-  hashing_algorithm: string;
-  image: Image;
-  last_updated: string;
-  links: {
-    homepage: string[];
-    whitepaper: string;
-    blockchain_site: string[];
-    official_forum_url: string[];
-    chat_url: string[];
-  };
-  localization: Localization;
-  market_cap_rank: number;
-  market_data: MarketData;
-  platforms: Record<string, string>;
-  preview_listing: boolean;
-  public_notice: string | null;
-  sentiment_votes_down_percentage: number;
-  sentiment_votes_up_percentage: number;
-  usd: number;
-  watchlist_portfolio_users: number;
-  web_slug: string;
-}
-
 export interface INFTDetailsProps {
   id: string;
   contract_address: string;
@@ -170,4 +134,34 @@ export type NftListItem = {
   id: string;
   name: string;
   symbol: string;
+};
+
+export type Coin = {
+  id: string;
+  symbol: string;
+  name: string;
+  image: string;
+  current_price: number;
+  market_cap: number;
+  market_cap_rank?: number; // Make market_cap_rank optional
+  rank?: number; // Make rank optional to handle undefined case
+  fully_diluted_valuation?: number | null; // Make fully_diluted_valuation optional
+  total_volume?: number; // Make total_volume optional
+  high_24h?: number; // Make high_24h optional
+  low_24h?: number; // Make low_24h optional
+  price_change_24h: number;
+  price_change_percentage_24h: number;
+  market_capchange_percentage_24h?: number; // Make market_capchange_percentage_24h optional
+  circulating_supply: number;
+  total_supply?: number | null; // Make total_supply optional
+  max_supply?: number | null; // Make max_supply optional
+  ath?: number; // Make ath optional
+  ath_change_percentage?: number; // Make ath_change_percentage optional
+  ath_date?: string; // Make ath_date optional
+  atl?: number; // Make atl optional
+  atl_change_percentage?: number; // Make atl_change_percentage optional
+  atl_date?: string; // Make atl_date optional
+  roi?: { times: number; currency: string; percentage: number } | null; // Make roi optional
+  sparkline_in_7d: { price: number[] } | []; // Ensure it's an object with a `price` array
+  last_updated: string;
 };

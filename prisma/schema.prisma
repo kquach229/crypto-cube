@@ -14,27 +14,18 @@ datasource db {
 }
 
 model User {
-  userId Int @id @default(autoincrement())
-  email String @unique
-  name String
-  watchlisted_coins Coin[] @relation("UserCoins")
-  watchlisted_nfts Nft[] @relation("UserNfts")
+  id             String    @id @default(cuid())
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  image          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  watchlistCoins Coin[]    @relation("UserCoins")
 }
-
 
 model Coin {
-  id  String @id
-  name String
-  Symbol String
-  image String?
-  watchlisted_by User[] @relation("UserCoins")
+  id          String  @id
+  watchlistUsers User[] @relation("UserCoins")
 }
 
-model Nft {
-  id String @id
-  contract_address String?
-  name String
-  asset_platform_id String
-  symbol String
-  watchlisted_by User[] @relation("UserNfts")
-}

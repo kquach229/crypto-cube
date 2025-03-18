@@ -23,82 +23,38 @@ import SparklineChart from '@/app/components/SparklineChart';
 import Loading from '@/app/loading';
 import Error from '@/app/error';
 import ReusableSearch from '@/app/components/ReusableSearch';
-
-export const dynamic = 'force-dynamic';
-
-export type Coin = {
-  id: string;
-  symbol: string;
-  name: string;
-  image: string;
-  current_price: number;
-  market_cap: number;
-  market_cap_rank?: number; // Make market_cap_rank optional
-  rank?: number; // Make rank optional to handle undefined case
-  fully_diluted_valuation?: number | null; // Make fully_diluted_valuation optional
-  total_volume?: number; // Make total_volume optional
-  high_24h?: number; // Make high_24h optional
-  low_24h?: number; // Make low_24h optional
-  price_change_24h: number;
-  price_change_percentage_24h: number;
-  market_capchange_percentage_24h?: number; // Make market_capchange_percentage_24h optional
-  circulating_supply: number;
-  total_supply?: number | null; // Make total_supply optional
-  max_supply?: number | null; // Make max_supply optional
-  ath?: number; // Make ath optional
-  ath_change_percentage?: number; // Make ath_change_percentage optional
-  ath_date?: string; // Make ath_date optional
-  atl?: number; // Make atl optional
-  atl_change_percentage?: number; // Make atl_change_percentage optional
-  atl_date?: string; // Make atl_date optional
-  roi?: { times: number; currency: string; percentage: number } | null; // Make roi optional
-  sparkline_in_7d: { price: number[] } | []; // Ensure it's an object with a `price` array
-  last_updated: string;
-};
-
-const fetchCryptoMarket = async (): Promise<Coin[]> => {
-  const response = await fetch(
-    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=true&days=7&interval=daily'
-  );
-  const data = await response.json();
-  return data.map((coin: Coin) => ({
-    id: coin.id,
-    symbol: coin.symbol,
-    name: coin.name,
-    rank: coin.market_cap_rank || undefined, // Handle undefined case for rank
-    image: coin.image,
-    current_price: coin.current_price,
-    market_cap: coin.market_cap,
-    circulating_supply: coin.circulating_supply,
-    price_change_24h: coin.price_change_24h,
-    price_change_percentage_24h: coin.price_change_percentage_24h,
-    sparkline_in_7d: coin.sparkline_in_7d ?? [],
-    last_updated: coin.last_updated,
-  }));
-};
+import WishlistStar from '@/app/components/WishlistStar';
+import { useMarketDetails, useUserDetails } from '@/hooks/useQueryHooks';
 
 const MarketPage = () => {
-  const {
-    data: coinsData = [],
-    error,
-    isLoading,
-  } = useQuery<Coin[]>({
-    queryKey: ['cryptomarket'],
-    queryFn: fetchCryptoMarket,
-    refetchInterval: 60000,
-  });
-
   const searchParams = useSearchParams();
   const { push } = useRouter();
 
-  if (isLoading) return <Loading />;
-  if (error) return <Error />;
+  const {
+    data: marketData,
+    isLoading: isMarketDataLoading,
+    error: isMarketDataError,
+  } = useMarketDetails();
+
+  const {
+    data: userData,
+    isLoading: isUserDataLoading,
+    isError: isUserDataError,
+  } = useUserDetails();
+
+  if (isMarketDataLoading || isUserDataLoading) return <Loading />;
+  if (isMarketDataError || isUserDataError) return <Error />;
 
   const searchQuery = searchParams.get('query')?.toLocaleLowerCase() || '';
 
   const handleClickCoinRow = (coinId: string) => {
     push(`/platform/market/${coinId}`);
   };
+
+  // Convert user's watchlist into a Set for faster lookup
+  const initialWatchlist = new Set(
+    userData.watchlistCoins.map((item) => item.id.toLowerCase())
+  );
 
   return (
     <div className='gap-5 flex flex-col'>
@@ -123,6 +79,7 @@ const MarketPage = () => {
             </TableCaption>
             <TableHeader>
               <TableRow>
+                <TableCell />
                 <TableHead>Rank</TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Market Cap</TableHead>
@@ -134,7 +91,7 @@ const MarketPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {coinsData
+              {marketData
                 .filter(
                   (coin) =>
                     coin.name.toLowerCase().includes(searchQuery) ||
@@ -145,7 +102,15 @@ const MarketPage = () => {
                     key={coin.id}
                     onClick={() => handleClickCoinRow(coin.id)}
                     className='w-full cursor-pointer'>
-                    <TableCell>{coin.rank}</TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
+                      <WishlistStar
+                        coinId={coin.id}
+                        initialIsWishlisted={initialWatchlist.has(
+                          coin.id.toLowerCase()
+                        )}
+                      />
+                    </TableCell>
+                    <TableCell align='center'>{coin.rank}</TableCell>
                     <TableCell>
                       <div className='flex items-center align-middle gap-2 w-[10rem]'>
                         <Image

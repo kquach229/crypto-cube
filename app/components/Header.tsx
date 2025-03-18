@@ -2,8 +2,10 @@ import { ModeToggle } from '@/components/ModeToggle';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { auth } from '@/auth';
 
-const Header = () => {
+const Header = async () => {
+  const session = await auth();
   return (
     <nav className='flex justify-between items-center mt-[10px] mb-[10px]'>
       <div>
@@ -19,12 +21,22 @@ const Header = () => {
         </Link>
       </div>
       <div className='relative flex gap-5 items-center'>
+        <Link href={'/platform/dashboard'}>Dashboard</Link>
         <Link href={'/platform/market'}>Market</Link>
         <Link href={'/platform/nfts'}>Nfts</Link>
         <Link href={'/platform/trending'}>Trending</Link>
         <Link href={'/platform/news'}>News</Link>
-        <Link href={'/platform/watchlist'}>Watchlist</Link>
         <ModeToggle />
+
+        {session?.user && (
+          <Image
+            className='rounded-full'
+            src={session.user.image}
+            alt='avatar'
+            width={35}
+            height={35}
+          />
+        )}
       </div>
     </nav>
   );
