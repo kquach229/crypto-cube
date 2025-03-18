@@ -33,9 +33,6 @@ export default function MobileSideBar() {
       <SidebarContent>
         <SidebarGroup className='mt-10'>
           <div className='relative flex flex-col gap-5'>
-            <Link onClick={toggleSidebar} href={'/platform/dashboard'}>
-              Dashboard
-            </Link>
             <Link onClick={toggleSidebar} href={'/platform/market'}>
               Market
             </Link>
@@ -47,6 +44,9 @@ export default function MobileSideBar() {
             </Link>
             <Link onClick={toggleSidebar} href={'/platform/news'}>
               News
+            </Link>
+            <Link onClick={toggleSidebar} href={'/platform/watchlist'}>
+              Watchlist
             </Link>
           </div>
         </SidebarGroup>

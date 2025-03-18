@@ -21,11 +21,11 @@ const Header = async () => {
         </Link>
       </div>
       <div className='relative flex gap-5 items-center'>
-        <Link href={'/platform/dashboard'}>Dashboard</Link>
         <Link href={'/platform/market'}>Market</Link>
         <Link href={'/platform/nfts'}>Nfts</Link>
         <Link href={'/platform/trending'}>Trending</Link>
         <Link href={'/platform/news'}>News</Link>
+        <Link href={'/platform/watchlist'}>Watchlist</Link>
         <ModeToggle />
 
         {session?.user && (

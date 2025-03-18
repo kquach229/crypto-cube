@@ -43,7 +43,7 @@ const DashboardPage = async () => {
       <p className='text-2xl mb-5'>Hello {session.user.name}</p>
       <ReusablePaper>
         <div>
-          <h5>Dashboard</h5>
+          <h5>Watchlist</h5>
         </div>
       </ReusablePaper>
       <ReusablePaper styles={{ marginTop: 15, minHeight: '70vh' }}>
