@@ -1,6 +1,6 @@
 'use client';
 import ReusablePaper from '@/app/components/ReusablePaper';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
@@ -25,7 +25,8 @@ import Error from '@/app/error';
 import ReusableSearch from '@/app/components/ReusableSearch';
 import WishlistStar from '@/app/components/WishlistStar';
 import { useMarketDetails, useUserDetails } from '@/hooks/useQueryHooks';
-
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 const MarketPage = () => {
   const searchParams = useSearchParams();
   const { push } = useRouter();

@@ -41,6 +41,9 @@ const getChartData = async ({
       `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${days}`
     );
 
+    if (!response.ok)
+      throw Error('Failed fetching chart data. Please try again later');
+
     const data: ChartDataResponse = await response.json();
     return data.prices.map((item) => [new Date(item[0]).getTime(), item[1]]);
   } catch (error) {

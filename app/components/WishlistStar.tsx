@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Star } from 'lucide-react';
+import { toast } from 'sonner';
 
 const WishlistStar = ({ coinId, initialIsWishlisted, onRemove }) => {
   const [isWishlisted, setIsWishlisted] = useState(initialIsWishlisted);
@@ -16,6 +17,10 @@ const WishlistStar = ({ coinId, initialIsWishlisted, onRemove }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ coinId }),
       });
+
+      toast(
+        `${coinId} has been ${newStatus ? 'added to' : 'removed from'} wishlist`
+      );
 
       if (!response.ok) throw new Error('Failed to update wishlist');
 

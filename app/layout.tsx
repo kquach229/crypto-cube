@@ -7,6 +7,7 @@ import QueryProvider from '@/components/QueryProvider'; // Import new QueryProvi
 import Script from 'next/script';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import MobileSideBar from './components/MobileSideBar';
+import { Toaster } from '@/components/ui/sonner';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -48,6 +49,7 @@ export default function RootLayout({
             </ThemeProvider>
           </SidebarProvider>
         </QueryProvider>
+        <Toaster />
       </body>
     </html>
   );
