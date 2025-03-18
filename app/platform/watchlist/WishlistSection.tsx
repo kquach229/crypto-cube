@@ -79,8 +79,8 @@ const WishlistSection = ({ initialWatchlist, onRemove }) => {
                     <Image
                       className='rounded-3xl'
                       src={coin.image}
-                      height={35}
-                      width={35}
+                      height={36}
+                      width={36}
                       alt={coin.name}
                     />
                     <div className='flex flex-col justify-around'>

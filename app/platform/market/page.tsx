@@ -25,8 +25,6 @@ import Error from '@/app/error';
 import ReusableSearch from '@/app/components/ReusableSearch';
 import WishlistStar from '@/app/components/WishlistStar';
 import { useMarketDetails, useUserDetails } from '@/hooks/useQueryHooks';
-import { Toaster } from '@/components/ui/sonner';
-import { toast } from 'sonner';
 const MarketPage = () => {
   const searchParams = useSearchParams();
   const { push } = useRouter();
@@ -52,10 +50,10 @@ const MarketPage = () => {
     push(`/platform/market/${coinId}`);
   };
 
-  // Convert user's watchlist into a Set for faster lookup
-  const initialWatchlist = new Set(
-    userData.watchlistCoins.map((item) => item.id.toLowerCase())
-  );
+  // // Convert user's watchlist into a Set for faster lookup
+  const initialWatchlist =
+    userData?.watchlistCoins &&
+    new Set(userData.watchlistCoins.map((item) => item.id.toLowerCase()));
 
   return (
     <div className='gap-5 flex flex-col'>
@@ -107,9 +105,10 @@ const MarketPage = () => {
                       <TableCell onClick={(e) => e.stopPropagation()}>
                         <WishlistStar
                           coinId={coin.id}
-                          initialIsWishlisted={initialWatchlist.has(
-                            coin.id.toLowerCase()
-                          )}
+                          initialIsWishlisted={
+                            initialWatchlist &&
+                            initialWatchlist.has(coin.id.toLowerCase())
+                          }
                         />
                       </TableCell>
                       <TableCell align='center'>{coin.rank}</TableCell>
@@ -118,8 +117,8 @@ const MarketPage = () => {
                           <Image
                             className='rounded-3xl'
                             src={coin.image}
-                            height={35}
-                            width={35}
+                            height={36}
+                            width={36}
                             alt={coin.name}
                           />
                           <div className='flex flex-col justify-around'>

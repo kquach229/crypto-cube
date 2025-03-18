@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
   try {
     const existingUser = await prisma.user.findUnique({
-      where: { email: session?.user?.email },
+      where: { email: session?.user?.email || '' },
     });
 
     // If session doesn't exist, return an error response
