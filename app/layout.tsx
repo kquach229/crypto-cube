@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import { SessionProvider } from 'next-auth/react';
 import Header from './components/Header';
 import QueryProvider from '@/components/QueryProvider'; // Import new QueryProvider component
 import Script from 'next/script';
@@ -29,27 +30,29 @@ export default function RootLayout({
         <Script type='text/jsx' src='echarts.js'></Script>
       </head>
       <body className={`${poppins.className} antialiased min-h-screen`}>
-        <QueryProvider>
-          <SidebarProvider>
-            <ThemeProvider
-              attribute='class'
-              defaultTheme='system'
-              enableSystem
-              disableTransitionOnChange>
-              <div className='p-5 w-full'>
-                <MobileSideBar />
-                <div className='block sm:hidden'>
-                  <SidebarTrigger />
+        <SessionProvider>
+          <QueryProvider>
+            <SidebarProvider>
+              <ThemeProvider
+                attribute='class'
+                defaultTheme='system'
+                enableSystem
+                disableTransitionOnChange>
+                <div className='p-5 w-full'>
+                  <MobileSideBar />
+                  <div className='block sm:hidden'>
+                    <SidebarTrigger />
+                  </div>
+                  <div className='hidden sm:block'>
+                    <Header />
+                  </div>
+                  {children}
                 </div>
-                <div className='hidden sm:block'>
-                  <Header />
-                </div>
-                {children}
-              </div>
-            </ThemeProvider>
-          </SidebarProvider>
-        </QueryProvider>
-        <Toaster />
+              </ThemeProvider>
+            </SidebarProvider>
+          </QueryProvider>
+          <Toaster />
+        </SessionProvider>
       </body>
     </html>
   );
