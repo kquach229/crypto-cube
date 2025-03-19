@@ -10,12 +10,16 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSidebar } from '@/components/ui/sidebar';
+import { useSession } from 'next-auth/react';
+import LogoutButton from './LogoutButton';
+import LoginButton from './LoginButton';
 
 export default function MobileSideBar() {
   const { toggleSidebar } = useSidebar();
+  const { data: userSession } = useSession();
   return (
     <Sidebar>
-      <SidebarHeader>
+      <SidebarHeader className='p-3'>
         <div className='flex w-full flex-row justify-between items-center'>
           <Link className='inline-flex items-center' href={'/'}>
             <Image
@@ -30,8 +34,8 @@ export default function MobileSideBar() {
           <ModeToggle />
         </div>
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup className='mt-10'>
+      <SidebarContent className='p-3'>
+        <SidebarGroup className='mt-5'>
           <div className='relative flex flex-col gap-5'>
             <Link onClick={toggleSidebar} href={'/platform/market'}>
               Market
@@ -50,7 +54,11 @@ export default function MobileSideBar() {
             </Link>
           </div>
         </SidebarGroup>
-        <SidebarGroup />
+
+        <SidebarGroup>
+          {' '}
+          {userSession?.user ? <LogoutButton /> : <LoginButton />}
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
     </Sidebar>
