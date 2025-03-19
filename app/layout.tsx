@@ -9,6 +9,7 @@ import Script from 'next/script';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import MobileSideBar from './components/MobileSideBar';
 import { Toaster } from '@/components/ui/sonner';
+import { Analytics } from '@vercel/analytics/react';
 
 const poppins = Poppins({
   variable: '--font-poppins',
@@ -53,6 +54,7 @@ export default function RootLayout({
           </QueryProvider>
           <Toaster />
         </SessionProvider>
+        <Analytics />
       </body>
     </html>
   );
