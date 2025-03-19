@@ -53,10 +53,10 @@ export async function POST() {
     }
 
     return NextResponse.json({ data: 'User already exists!' });
-  } catch () {
+  } catch (error) {
     return NextResponse.json(
       {
-        error: 'Failed to create user',
+        error: error,
       },
       { status: 500 }
     );
