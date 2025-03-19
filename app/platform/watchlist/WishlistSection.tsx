@@ -30,12 +30,11 @@ const WishlistSection = ({
   onRemove?: (id: string) => void;
 }) => {
   const { data, isLoading, error } = useMarketDetails();
+  const { push } = useRouter();
   const watchlistIds = initialWatchlist.map((item) => item.id);
   if (!initialWatchlist || initialWatchlist.length === 0) {
     return <p>No wishlist found.</p>;
   }
-
-  const { push } = useRouter();
 
   const handleClickCoinRow = (coinId: string) => {
     push(`/platform/market/${coinId}`);
