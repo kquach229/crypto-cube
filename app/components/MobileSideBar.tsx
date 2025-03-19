@@ -57,7 +57,11 @@ export default function MobileSideBar() {
 
         <SidebarGroup>
           {' '}
-          {userSession?.user ? <LogoutButton /> : <LoginButton />}
+          {userSession?.user ? (
+            <LogoutButton styles={{ width: '100%' }} />
+          ) : (
+            <LoginButton styles={{ width: '100%' }} />
+          )}
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter />
