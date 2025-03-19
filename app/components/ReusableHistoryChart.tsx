@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import ReactECharts from 'echarts-for-react';
 import Loading from '../loading';
 import { Button } from '@/components/ui/button';
-import Error from '../error';
 import { ChartDataResponse, ReusableHistoryChartProps } from '../types/types';
 import { EChartsOption } from 'echarts';
 import {
@@ -14,6 +13,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { InfoIcon } from 'lucide-react';
+import Error from 'next/error';
 const INTERVALS = {
   '1D': 1,
   '1W': 7,
@@ -42,7 +42,10 @@ const getChartData = async ({
     );
 
     if (!response.ok)
-      throw Error('Failed fetching chart data. Please try again later');
+      throw new Error({
+        error: 'Failed fetching chart data. Please try again later',
+        statusCode: 500,
+      });
 
     const data: ChartDataResponse = await response.json();
     return data.prices.map((item) => [new Date(item[0]).getTime(), item[1]]);
@@ -84,7 +87,7 @@ const ReusableHistoryChart: React.FC<ReusableHistoryChartProps> = ({
   };
 
   if (isLoading) return <Loading />;
-  if (error) return <Error />;
+  if (error) return <Error statusCode={500} />;
 
   // Formatter function
   const getDateFormatter = (interval: string) => {

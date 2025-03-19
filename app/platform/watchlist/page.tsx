@@ -2,12 +2,10 @@
 
 import { prisma } from '@/src/lib/prisma';
 import { auth } from '@/auth';
-import LogoutButton from '@/app/components/LogoutButton';
 import LoginButton from '@/app/components/LoginButton';
 import ReusablePaper from '@/app/components/ReusablePaper';
-import WishlistSectionWrapper from './WishlistSectionWrapper';
 import WishlistSection from './WishlistSection';
-import Image from 'next/image';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 const DashboardPage = async () => {
   // Fetch session details on the server side
@@ -15,14 +13,33 @@ const DashboardPage = async () => {
 
   if (!session?.user) {
     return (
-      <div
-        className={`h-screen w-screen flex items-center justify-center bg-[url('/wishlist.png')] bg-cover bg-center blur-xs`}></div>
+      <div className='relative h-screen w-screen flex items-center justify-center'>
+        {/* Background with Blur */}
+        <div className="absolute blur-xs inset-0 bg-[url('/wishlist.png')] bg-cover bg-center bg-no-repeat backdrop-blur-sm"></div>
+
+        {/* Content without Blur */}
+
+        <Card className='flex flex-col justify-around z-10 border-muted-foreground border-1 drop-shadow-lg h-[20rem] rounded-lg w-xs md:w-md max-w-shadow-l'>
+          <CardHeader className='text-center text-3xl font-semibold'>
+            Login or Register
+          </CardHeader>
+          <CardContent className='text-center'>
+            <div>
+              Create an account to access our watchlist functionality. Why not,
+              it is FREE!
+            </div>
+            <div className='mt-10'>
+              <LoginButton styles={{ height: '55px' }} />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
   // Ensure user exists in database
   let user = await prisma.user.findUnique({
-    where: { email: session?.user.email },
+    where: { email: session?.user.email || '' },
     include: { watchlistCoins: true },
   });
 

@@ -1,7 +1,6 @@
 'use client';
 import ReusablePaper from '@/app/components/ReusablePaper';
-import React, { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
   Table,
@@ -25,6 +24,7 @@ import Error from '@/app/error';
 import ReusableSearch from '@/app/components/ReusableSearch';
 import WishlistStar from '@/app/components/WishlistStar';
 import { useMarketDetails, useUserDetails } from '@/hooks/useQueryHooks';
+import { Coin } from '@/app/types/types';
 const MarketPage = () => {
   const searchParams = useSearchParams();
   const { push } = useRouter();
@@ -53,7 +53,7 @@ const MarketPage = () => {
   // // Convert user's watchlist into a Set for faster lookup
   const initialWatchlist =
     userData?.watchlistCoins &&
-    new Set(userData.watchlistCoins.map((item) => item.id.toLowerCase()));
+    new Set(userData.watchlistCoins.map((item: Coin) => item.id.toLowerCase()));
 
   return (
     <div className='gap-5 flex flex-col'>

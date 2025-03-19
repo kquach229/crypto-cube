@@ -22,7 +22,14 @@ import Error from '@/app/error';
 import SparklineChart from '@/app/components/SparklineChart';
 import { useRouter } from 'next/navigation';
 
-const WishlistSection = ({ initialWatchlist, onRemove }) => {
+const WishlistSection = ({
+  initialWatchlist,
+  onRemove,
+}: {
+  initialWatchlist: { id: string }[];
+  onRemove?: (id: string) => void;
+}) => {
+  console.log(initialWatchlist);
   if (!initialWatchlist || initialWatchlist.length === 0) {
     return <p>No wishlist found.</p>;
   }
@@ -32,7 +39,7 @@ const WishlistSection = ({ initialWatchlist, onRemove }) => {
 
   const watchlistIds = initialWatchlist.map((item) => item.id);
 
-  const handleClickCoinRow = (coinId: string, e) => {
+  const handleClickCoinRow = (coinId: string) => {
     push(`/platform/market/${coinId}`);
   };
 
@@ -58,7 +65,8 @@ const WishlistSection = ({ initialWatchlist, onRemove }) => {
           {data
             ?.filter((item) =>
               watchlistIds.some(
-                (id) => id.toLowerCase().trim() === item.id.toLowerCase().trim()
+                (id: string) =>
+                  id.toLowerCase().trim() === item.id.toLowerCase().trim()
               )
             )
             .map((coin) => (

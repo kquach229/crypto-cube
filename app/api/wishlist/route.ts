@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
   // Connect the coin to the user's watchlist
   await prisma.user.update({
-    where: { email: session.user.email },
+    where: { email: session.user.email || '' },
     data: {
       watchlistCoins: {
         connect: { id: coin.id },
@@ -43,11 +43,11 @@ export async function DELETE(req: Request) {
   const { coinId } = await req.json();
 
   const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
+    where: { email: session.user.email || '' },
   });
 
   await prisma.user.update({
-    where: { email: user?.email },
+    where: { email: user?.email || '' },
     data: {
       watchlistCoins: {
         disconnect: { id: coinId },

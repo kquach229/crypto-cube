@@ -107,8 +107,8 @@ const TrendingPage: React.FC = () => {
                     <div className='flex items-center w-full gap-5'>
                       <Image
                         className='rounded-full'
-                        width={50}
-                        height={150}
+                        width={48}
+                        height={156}
                         style={{ objectFit: 'contain' }}
                         src={coin.item.large}
                         alt={coin.item.name}
@@ -147,8 +147,8 @@ const TrendingPage: React.FC = () => {
                     <div className='flex items-center w-full gap-5'>
                       <Image
                         className='rounded-full'
-                        width={50}
-                        height={150}
+                        width={48}
+                        height={156}
                         style={{ objectFit: 'contain' }}
                         src={nft.thumb}
                         alt={nft.name}

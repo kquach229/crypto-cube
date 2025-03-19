@@ -3,11 +3,27 @@
 import { useState } from 'react';
 import { Star } from 'lucide-react';
 import { toast } from 'sonner';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-const WishlistStar = ({ coinId, initialIsWishlisted, onRemove }) => {
+const WishlistStar = ({
+  coinId,
+  initialIsWishlisted,
+  onRemove,
+}: {
+  coinId: string;
+  initialIsWishlisted: boolean;
+  onRemove?: (id: string) => void;
+}) => {
   const [isWishlisted, setIsWishlisted] = useState(initialIsWishlisted);
+  const { data: session } = useSession();
+  const { push } = useRouter();
 
   const toggleWishlist = async () => {
+    if (!session?.user) {
+      push('/platform/watchlist');
+      return;
+    }
     const newStatus = !isWishlisted;
     setIsWishlisted(newStatus); // Optimistic update
 
