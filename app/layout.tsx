@@ -39,7 +39,7 @@ export default function RootLayout({
                 defaultTheme='system'
                 enableSystem
                 disableTransitionOnChange>
-                <div className='p-5 w-full'>
+                <div className='p-5 w-full overflow-x-hidden'>
                   <MobileSideBar />
                   <div className='block sm:hidden'>
                     <SidebarTrigger />

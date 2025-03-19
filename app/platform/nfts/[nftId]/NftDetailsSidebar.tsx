@@ -41,27 +41,27 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
       {/* <div className='text-lg text-center font-bold mb-5'>{name} Stats</div> */}
       <div className='flex justify-between flex-col w-full'>
         <h1 className='font-semibold mb-5'>Key Metrics</h1>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Market Cap Rank</span>
           <span>{market_cap_rank}</span>
         </div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Market Cap</span>
           <span>{friendlyFormatter.format(market_cap.usd)}</span>
         </div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Market Total Supply</span>
           <span>{friendlyFormatter.format(total_supply)}</span>
         </div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>All Time High</span>
           <span>{formatPrice('USD', ath.usd)}</span>
         </div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>All Time High Date</span>
           <span>
             {ath_date.usd && new Date(ath_date.usd).toLocaleDateString()}
@@ -70,7 +70,7 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
       </div>
 
       <div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Floor Price Change 24h</span>
           <span
             className={
@@ -82,7 +82,7 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
           </span>
         </div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Floor Price Change 7D</span>
           <span
             className={
@@ -93,7 +93,7 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
             {percentageFormatter(floor_price_7d_percentage_change.usd)}
           </span>
         </div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Floor Price Change 14D</span>
           <span
             className={
@@ -104,7 +104,7 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
             {percentageFormatter(floor_price_14d_percentage_change.usd)}
           </span>
         </div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Floor Price Change 30D</span>
           <span
             className={
@@ -115,7 +115,7 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
             {percentageFormatter(floor_price_30d_percentage_change.usd)}
           </span>
         </div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Floor Price Change 1Y</span>
           <span
             className={
@@ -126,7 +126,7 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
             {percentageFormatter(floor_price_1y_percentage_change.usd)}
           </span>
         </div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Volume 24h Change</span>
           <span
             className={
@@ -141,16 +141,16 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
 
       <div className='flex justify-between flex-col w-full'>
         <h1 className='font-semibold mb-5'>Info</h1>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Name</span>
           <span>{name}</span>
         </div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Symbol</span>
           <span>{symbol.toUpperCase()}</span>
         </div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Links</span>
           <DropdownMenu>
             <DropdownMenuTrigger className='flex text-center gap-2'>
@@ -172,7 +172,7 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Explorers</span>
           <DropdownMenu>
             <DropdownMenuTrigger className='flex text-center gap-2'>
@@ -195,11 +195,11 @@ const NftDetailsSidebar = ({ data }: { data: INFTDetailsProps }) => {
           </DropdownMenu>
         </div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Favorites Count</span>
           <span>{friendlyFormatter.format(user_favorites_count)}</span>
         </div>
-        <div className='flex justify-between'>
+        <div className='flex justify-between text-sm'>
           <span>Unique Address Count</span>
           <span>{friendlyFormatter.format(number_of_unique_addresses)}</span>
         </div>

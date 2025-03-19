@@ -23,7 +23,7 @@ const ReusableSearch = ({ placeholder = 'Search' }) => {
         onChange={(e) => handleSearch(e.target.value)}
         type='search'
         placeholder={placeholder}
-        className='pl-8 border-none shadow-none w-[300px]'
+        className='pl-8 border-none shadow-none w-[200px]'
         defaultValue={searchParams.get('query')?.toString()}
       />
     </div>

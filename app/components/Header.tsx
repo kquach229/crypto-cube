@@ -27,7 +27,7 @@ const Header = async () => {
             height={50}
             width={50}
           />
-          <h1 className='ml-2 font-semibold'>CryptoCube</h1>
+          <h1 className='ml-2 font-semibold hidden md:block'>CryptoCube</h1>
         </Link>
       </div>
       <div className='relative flex gap-5 items-center'>

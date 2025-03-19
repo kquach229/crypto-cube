@@ -83,7 +83,9 @@ const NewsPage = () => {
         }}>
         <div>
           <div className='font-semibold'>Crypto News</div>
-          <div>{new Date().toDateString()}</div>
+          <div className='text-sm hidden md:block'>
+            {new Date().toDateString()}
+          </div>
         </div>
         <div>
           <ReusableSearch placeholder='Search News' />
