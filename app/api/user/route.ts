@@ -25,7 +25,7 @@ export const GET = async () => {
   }
 };
 
-export async function POST(request: Request) {
+export async function POST() {
   const session = await auth();
 
   try {
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ data: 'User already exists!' });
-  } catch (error) {
+  } catch () {
     return NextResponse.json(
       {
         error: 'Failed to create user',
